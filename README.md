@@ -29,7 +29,7 @@ Ce guide permet d'effectuer l'analyse GWAS en utilisant une jeu de données rela
   install.packages(c("ggplot2", "data.table", "dplyr"))
   
   
-**3. Prétraitement des données**
+## 3. Prétraitement des données 
 - Formatage des fichiers
 - Assurez-vous que les fichiers de génotype et de phénotype sont correctement formatés pour l'analyse.
 - Utilisez des scripts R pour convertir les formats si nécessaire.
