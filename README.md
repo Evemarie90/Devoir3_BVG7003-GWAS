@@ -1,41 +1,58 @@
 # GUIDE COMPLET POUR ANALYSE GWAS
 
-**DESCRIPTION**
+## Description
+Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l'aide d'un jeu de données génotypiques et phénotypiques. Il utilise le package **rMVP** dans R pour l'exécution de l'analyse, et inclut des étapes pour le prétraitement des données, la génération de graphiques (Manhattan et QQ), et l'identification des SNPs significatifs.
 
-Ce guide permet d'effectuer l'analyse GWAS en utilisant une jeu de données relatif au génotype et au phénotype soumis au logiciel rMVP. Il inclut des étapes de prétraitement des données, d'exécution d'analyse GWAS et de préparation de graphiques (Manhanttan et QQ). Il permet d'identifier les SNPS significatifs via l'interprétration des graphiques. 
+## Table des matières
+1. [Prérequis](#prérequis)
+2. [Configuration des outils et données](#configuration-des-outils-et-données)
+3. [Prétraitement des données](#prétraitement-des-données)
+4. [Exécution de l'analyse GWAS](#exécution-de-lanalyse-gwas)
+5. [Résultats attendus](#résultats-attendus)
+6. [Exemple d'interprétation](#exemple-dinterprétation)
 
-**FONCTIONNALITÉS**
-- Explications relatives à la configuration de l'ensemble des données
-- Téléchargement des outils R et Rstudio ainsi que du paquet rMVP et des dépendances supplémentaires (ggplot, ggplot2)
-- Prétraitement des données
-- Exécution de l'analyse GWAS
+## Prérequis
+- R (version 4.0+)
+- RStudio (version 1.4+)
+- Connexion Internet pour télécharger les données et packages nécessaires.
 
-# Configuration de l'ensemble de données pour l'analyse GWAS
+## Configuration des outils et données
+1. Téléchargez les données à partir de Figshare : [Lien ici](#).
+2. Installez R et RStudio en suivant les instructions disponibles sur [CRAN](https://cran.r-project.org/).
+3. Installez les packages nécessaires dans R :
+   ```r
+   install.packages(c("rMVP", "ggplot2", "data.table", "dplyr"))
 
-## 1. Accéder aux données
+## Prétraitement des données
 
-### Projet Figshare
-- Télécharger les données relatives au génotype et au phénotype depuis le projet Figshare  [Lien vers Figshare ](https://figshare.com/projects/Genome-Wide_Association_Analyses_Reveal_the_Genetic_Basis_of_Symbiotic_Nitrogen_Fixation_in_African_Soybean/65885)
+1. Chargez vos fichiers de génotype et de phénotype.
+2. Filtrez les SNPs avec une fréquence allélique mineure (MAF) inférieure à 0,05 :
+```r
+genotype <- genotype[genotype$MAF >= 0.05, ]
+```
+3. Générez des covariables via une analyse en composantes principales (ACP) pour corriger la structure de la population.
 
-## 2. Outils et configuration de l'environnement
+## Exécution de l'analyse GWAS
 
-### Installation des outils nécessaires
-- **R et RStudio** : Suivez les instructions sur CRAN pour installer R et RStudio.
-- **rMVP** : Installez le paquet rMVP pour l'analyse GWAS en utilisant la commande suivante dans R :
-  ```R
-  install.packages("rMVP")
-- Installation des dépendances nécessaires  :
-  ```R
-  install.packages(c("ggplot2", "data.table", "dplyr"))
-  
-  
-## 3. Prétraitement des données 
-- Formatage des fichiers
-- Assurez-vous que les fichiers de génotype et de phénotype sont correctement formatés pour l'analyse.
-- Utilisez des scripts R pour convertir les formats si nécessaire.
-- Contrôle de qualité
-- Filtrez les SNP avec une fréquence allélique mineure (MAF) < 0,05.
-- Traitez les données manquantes en utilisant des méthodes appropriées (par exemple, imputation).
-- Génération des covariables
-- Utilisez l'analyse en composantes principales (ACP) pour la structure de la population ou générez une matrice de parenté.
+1. Chargez les données dans rMVP :
+```r
+MVP.Data(fileGenotype = "genotype.txt", filePhenotype = "phenotype.txt")
+```
+2. Exécutez l'analyse GWAS
+```r
+MVP.GWAS(file = "data", covariates = cov_matrix)
+```
+
+## Résultats attendus
+
+Un graphique de Manhattan montrant les SNPs significatifs.
+Un graphique QQ montrant l'absence ou la présence d'inflation génomique.
+
+## Exemple d'interprétation
+
+Les SNPs au-dessus du seuil dans le graphique de Manhattan indiquent des associations significatives.
+Une distribution linéaire dans le graphique QQ suggère une bonne correction des valeurs P.
+
+
+
 
