@@ -14,7 +14,7 @@ Ce guide permet d'effectuer l'analyse GWAS en utilisant une jeu de données rela
 ## 1. Accéder aux données
 
 ### Projet Figshare
-- Télécharger les données relatives au génotype et au phénotype depuis le projet Figshare  ```[Link Text  ](https://figshare.com/projects/Genome-Wide_Association_Analyses_Reveal_the_Genetic_Basis_of_Symbiotic_Nitrogen_Fixation_in_African_Soybean/65885)
+- Télécharger les données relatives au génotype et au phénotype depuis le projet Figshare  ```[Lien vers Figshare ](https://figshare.com/projects/Genome-Wide_Association_Analyses_Reveal_the_Genetic_Basis_of_Symbiotic_Nitrogen_Fixation_in_African_Soybean/65885)
 
 ## 2. Outils et configuration de l'environnement
 
