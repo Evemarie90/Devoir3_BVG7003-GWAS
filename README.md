@@ -1,6 +1,7 @@
 # GUIDE COMPLET POUR ANALYSE GWAS
 
 **DESCRIPTION**
+
 Ce guide permet d'effectuer l'analyse GWAS en utilisant une jeu de données relatif au génotype et au phénotype soumis au logiciel rMVP. Il inclut des étapes de prétraitement des données, d'exécution d'analyse GWAS et de préparation de graphiques (Manhanttan et QQ). Il permet d'identifier les SNPS significatifs via l'interprétration des graphiques. 
 
 **FONCTIONNALITÉS**
