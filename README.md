@@ -24,6 +24,10 @@ Ce guide permet d'effectuer l'analyse GWAS en utilisant une jeu de données rela
 - **rMVP** : Installez le paquet rMVP pour l'analyse GWAS en utilisant la commande suivante dans R :
   ```R
   install.packages("rMVP")
+- Installation des dépendances nécessaires  :
+  ```R
+  install.packages(c("ggplot2", "data.table", "dplyr"))
+  
   
 **3. Prétraitement des données**
 - Formatage des fichiers
