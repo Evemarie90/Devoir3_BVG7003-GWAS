@@ -20,7 +20,7 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 1. Installez R et RStudio en suivant les instructions disponibles sur [CRAN](https://cran.r-project.org/).
 2. Installez les packages nécessaires dans R :
    ```r
-   install.packages(c("rMVP", "readxl", "dplyr"))
+   install.packages(c("rMVP","ggplot2", "data.table" "readxl", "dplyr"))
 
 ## Prétraitement des données
 
