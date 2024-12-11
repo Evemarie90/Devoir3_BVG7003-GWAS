@@ -17,9 +17,8 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 - Connexion Internet pour télécharger les données et packages nécessaires.
 
 ## Configuration des outils et données
-1. Téléchargez les données à partir de Figshare : [Lien ici](#).
-2. Installez R et RStudio en suivant les instructions disponibles sur [CRAN](https://cran.r-project.org/).
-3. Installez les packages nécessaires dans R :
+1. Installez R et RStudio en suivant les instructions disponibles sur [CRAN](https://cran.r-project.org/).
+2. Installez les packages nécessaires dans R :
    ```r
    install.packages(c("rMVP", "ggplot2", "data.table", "dplyr"))
 
