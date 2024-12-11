@@ -39,12 +39,6 @@ excel_data$pos <- as.integer(excel_data$pos)  # S'assure que la colonne 'pos' es
 # - Enregistre le fichier de donnees au format Hapmap requis par rMVP
 write.table(excel_data, file = "output_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
-# 3.4 Controle de qualite des SNPs
-# - Filtrage des SNPs avec MAF (Minor Allele Frequency) < 0.05
-# - Cette etape peut être faite dans rMVP, mais ici un exemple de comment le faire en R 
-excel_data <- excel_data %>% 
-  filter(MAF >= 0.05)  # Filtrer les SNPs dont la frequence allelique mineure est inferieure à 0,05
-
 ###############################################
 # 4. EXECUTION DE L'ANALYSE GWAS             #
 ###############################################
@@ -59,6 +53,7 @@ MVP.Data(fileHMP = "output_file.hmp.txt",  # Fichier Hapmap du genotype
          SNP.effect = "Add",  # Modele additif d'effet des SNP
          fileKin = FALSE,  # Pas de fichier de matrice de parenté (peut être calculé plus tard)
          filePC = FALSE,  # Pas de fichier de composantes principales (sera calculé automatiquement)
+         MAF = 0.05, # utilise un seuil de 0,05 pour les allèles qui ont une fréquence moins élevée
          out = "mvp.hmp")  # Nom de la sortie (base de noms pour les fichiers generees)
 
 # 4.2 Chargement des fichiers generes par MVP.Data
