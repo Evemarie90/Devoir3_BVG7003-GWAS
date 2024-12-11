@@ -1,3 +1,13 @@
+library(readxl)
+
+# Read the Excel file into R
+excel_data <- read_excel("exported_dataset.xlsx")
+
+# Write the data to a Hapmap file
+write.table(excel_data, file = "output_file.hmp.txt", 
+            sep = "\t", row.names = FALSE, quote = FALSE)
+
+
 MVP.Data(fileHMP="output_file.hmp.txt",
          filePhe="Phenotype_African.txt",
          sep.hmp="\t",
