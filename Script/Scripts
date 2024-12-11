@@ -21,7 +21,7 @@ install.packages(c("ggplot2", "data.table", "dplyr", "readxl"))
 library(readxl)  # Pour lire les fichiers Excel
 library(rMVP)    # Pour l'analyse GWAS
 library(dplyr)   # Pour le traitement des données
-install.packages("openxlsx")
+install.packages("openxlsx") #Effectuer l'ouverture de document XL et l'enregistrement de document excel
 library(readxl)
 
 ###############################################
