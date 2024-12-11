@@ -47,7 +47,7 @@ calculate_maf <- function(genotype_data) {
 }
 
 # Définir les colonnes importantes à conserver
-colonnes_importantes <- c("rs#", "alleles", "chrom", "pos", "strand", "assembly#", "center", "protLSID", "assayLSID", "panelLSID", "QCcode")
+colonnes_importantes <- c("rs#", "alleles", "pos", "assembly#", "center", "protLSID", "assayLSID", "panelLSID", "QCcode")
 
 # Appliquer la fonction à chaque colonne SNP
 valeurs_maf <- apply(genotype_data[, -1], 2, calculate_maf)  # Supposons que la première colonne soit les ID SNP
