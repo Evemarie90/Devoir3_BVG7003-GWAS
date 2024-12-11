@@ -1,0 +1,42 @@
+```{r pressure, echo=FALSE}
+# Ensure your data is correctly read
+data <- read.table("African_SNPs_test.hmp.txt", header = TRUE)
+
+# Check the dimensions of the data
+header <- readLines("African_SNPs_test.hmp.txt", n = 1)
+num_columns <- length(strsplit(header, "\t")[[1]])
+print(num_columns)
+
+# Read the file without the header
+data <- read.table("African_SNPs_test.hmp.txt", header = FALSE, sep = "\t", skip = 1)
+
+# Define the correct column names
+correct_header <- c("rs#", "alleles", "chrom", "pos", "strand", "assembly#", "center", "protLSID", "assayLSID", "panelLSID", "QCcode", paste0("sample", 1:(ncol(data) - 11)))
+
+# Combine the header and data
+colnames(data) <- correct_header
+write.table(data, "fixed_African_SNPs_test.hmp.txt", sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
+
+write.csv(data, "exported_dataset.csv", row.names = FALSE)
+
+library(readxl)
+
+# Read the Excel file into R
+excel_data <- read_excel("exported_dataset.xlsx")
+
+# Write the data to a Hapmap file
+write.table(excel_data, file = "output_file.hmp.txt", 
+            sep = "\t", row.names = FALSE, quote = FALSE)
+
+MVP.Data(fileHMP="output_file.hmp.txt",
+         filePhe="Phenotype_African.txt",
+         sep.hmp="\t",
+         sep.phe="\t",
+         SNP.effect="Add",
+         fileKin=FALSE,
+         filePC=FALSE,
+         #maxLine=10000,
+         out="mvp.hmp"
+         )
+
+```
