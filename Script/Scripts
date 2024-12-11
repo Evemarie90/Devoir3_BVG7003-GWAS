@@ -89,31 +89,5 @@ for(i in 2:ncol(phenotype)){
 }
 
 ###############################################
-# 6. GENERATION DE COVARIABLES (OPTIONNEL)   #
-###############################################
-
-# 6.1 Analyse en composantes principales (ACP) pour capturer la structure de la population
-# - Cette etape peut être faite en R en utilisant prcomp() ou PCAtools
-pca_results <- prcomp(genotype, scale. = TRUE)  # Effectue une ACP sur le genotype
-
-# 6.2 Generer les covariables de l'ACP (par exemple, les 3 premieres PC)
-# - Extraire les 3 premieres composantes principales
-covariables <- pca_results$x[, 1:3]  # Les 3 premieres composantes principales
-
-# 6.3 Incorporation des covariables dans l'analyse GWAS
-# - rMVP permet d'incorporer des covariables a l'aide de l'argument "CV.GLM", "CV.MLM" et "CV.FarmCPU"
-# - Exemple d'incorporation des covariables lors de l'analyse
-
-imMVP <- MVP(
-  phe = phenotype[, c(1, 2)],  # Exemple de phenotype
-  geno = genotype,  # Matrice de genotype
-  map = map,  # Carte genetique
-  CV.GLM = covariables,  # Covariables dans GLM
-  CV.MLM = covariables,  # Covariables dans MLM
-  CV.FarmCPU = covariables,  # Covariables dans FarmCPU
-  method = c("GLM", "MLM", "FarmCPU")  # Methodes d'analyse
-)
-
-###############################################
 # FIN DU SCRIPT                             #
 ###############################################
