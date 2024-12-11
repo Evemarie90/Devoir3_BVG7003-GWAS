@@ -21,23 +21,54 @@ install.packages(c("ggplot2", "data.table", "dplyr", "readxl"))
 library(readxl)  # Pour lire les fichiers Excel
 library(rMVP)    # Pour l'analyse GWAS
 library(dplyr)   # Pour le traitement des données
+install.packages("openxlsx")
+library(readxl)
 
 ###############################################
 # 3. PRETRAITEMENT DES DONNEES               #
 ###############################################
 
-# 3.1 Chargement des donnees de genotype
-# - Lecture d'un fichier Excel contenant les donnees de genotype
-# - Assurez-vous que le fichier contient les colonnes "chrom", "pos", et "SNP" au minimum
-excel_data <- read_excel("exported_dataset.xlsx")  # Charge les donnees de genotype depuis un fichier Excel
+# Lire le fichier Excel
+genotype_data <- read_excel("exported_dataset.xlsx")
 
-# 3.2 Formatage du fichier Hapmap
-# - Convertir les positions ("pos") en entiers au cas où elles seraient lues en tant que texte
-excel_data$pos <- as.integer(excel_data$pos)  # S'assure que la colonne 'pos' est de type entier
+# Définir la fonction calculate_maf
+calculate_maf <- function(genotype_data) {
+  # Supprimer les valeurs manquantes
+  genotype_data <- na.omit(genotype_data)
+  
+  # Vérifier s'il reste des valeurs non manquantes
+  if (length(genotype_data) == 0) {
+    return(NA)  # Retourner NA si toutes les valeurs sont manquantes
+  }
+  
+  allele_counts <- table(unlist(genotype_data))
+  maf <- min(allele_counts) / sum(allele_counts)
+  return(maf)
+}
 
-# 3.3 Sauvegarde du fichier au format Hapmap
-# - Enregistre le fichier de donnees au format Hapmap requis par rMVP
-write.table(excel_data, file = "output_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+# Définir les colonnes importantes à conserver
+colonnes_importantes <- c("rs#", "alleles", "chrom", "pos", "strand", "assembly#", "center", "protLSID", "assayLSID", "panelLSID", "QCcode")
+
+# Appliquer la fonction à chaque colonne SNP
+valeurs_maf <- apply(genotype_data[, -1], 2, calculate_maf)  # Supposons que la première colonne soit les ID SNP
+
+# Filtrer les SNPs avec des valeurs MAF NA et MAF < 0,05
+maf_valide <- !is.na(valeurs_maf) & valeurs_maf >= 0.05
+
+# Sous-ensemble des données pour conserver les colonnes importantes et les colonnes SNP valides
+donnees_filtrees <- genotype_data[, c(colonnes_importantes, names(genotype_data)[-1][maf_valide])]
+
+# Gérer les données manquantes (supprimer les SNPs avec >10% de données manquantes)
+seuil_manquant <- 0.1
+donnees_manquantes <- colMeans(is.na(donnees_filtrees[, -1]))  # Supposons que la première colonne soit les ID SNP
+donnees_filtrees <- donnees_filtrees[, c(TRUE, donnees_manquantes <= seuil_manquant)]
+
+# Enregistrer dans un nouveau fichier Excel
+write.xlsx(donnees_filtrees, "filtered_excel_data2.xlsx")
+
+# Écrire les données dans un fichier HapMap
+write.table(donnees_filtrees, file = "output_file.hmp.txt", 
+            sep = "\t", row.names = FALSE, quote = FALSE)
 
 ###############################################
 # 4. EXECUTION DE L'ANALYSE GWAS             #
