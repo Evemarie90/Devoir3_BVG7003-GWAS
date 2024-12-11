@@ -52,6 +52,20 @@ Un graphique QQ montrant l'absence ou la présence d'inflation génomique.
 Les SNPs au-dessus du seuil dans le graphique de Manhattan indiquent des associations significatives.
 Une distribution linéaire dans le graphique QQ suggère une bonne correction des valeurs P.
 
+## Dépannage ##
+Advenant que le téléchargement du fichier hmp entraine la modification de l'alignement des colonnes de ce dernier vous pouvez convertir votre fichier hmp en fichier excel (copier-coller les données). Ensuite, vous pouvez utiliser le script ci-dessous pour re-convertir vos données en hmp :
 
+#### Lire le fichier excel dans R ####
+```r
+library(readxl)
+
+excel_data <- read_excel("excel_dataset.xlsx")
+```
+
+#### Écrire les données dans un fichier hmp ####
+```r
+Rstudio write.table(excel_data, file = "output_file.hmp.txt", 
+            sep = "\t", row.names = FALSE, quote = FALSE)
+```
 
 
