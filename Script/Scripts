@@ -53,7 +53,6 @@ MVP.Data(fileHMP = "output_file.hmp.txt",  # Fichier Hapmap du genotype
          SNP.effect = "Add",  # Modele additif d'effet des SNP
          fileKin = FALSE,  # Pas de fichier de matrice de parenté (peut être calculé plus tard)
          filePC = FALSE,  # Pas de fichier de composantes principales (sera calculé automatiquement)
-         MAF = 0.05, # utilise un seuil de 0,05 pour les allèles qui ont une fréquence moins élevée
          out = "mvp.hmp")  # Nom de la sortie (base de noms pour les fichiers generees)
 
 # 4.2 Chargement des fichiers generes par MVP.Data
