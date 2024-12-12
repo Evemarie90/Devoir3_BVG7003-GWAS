@@ -5,6 +5,7 @@ library(bigmemory)
 setwd("C:/Users/joell/Desktop/Devoir3_bioinfo")
 hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
 
+# Pour sélectionner aléatoirement 100 échantillons pour tester le code
 set.seed(42)  # Vous pouvez choisir n'importe quel nombre
 remaining_columns <- colnames(hmp_data)[12:ncol(hmp_data)]
 random_columns <- sample(remaining_columns, 100)
