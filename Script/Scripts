@@ -1,89 +1,24 @@
-###############################################
-# 1. INSTALLATION DES OUTILS ET DEPENDANCES  #
-###############################################
+library(data.table)
+library(rMVP)
+library(bigmemory)
 
-# Installer R et RStudio
-# - Télécharger et installer R depuis : https://cran.r-project.org/
-# - Télécharger et installer RStudio Desktop depuis : https://posit.co/download/rstudio-desktop/
+setwd("C:/Users/joell/Desktop/Devoir3_bioinfo")
+hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
 
-# Installer le paquet rMVP (pour l'analyse GWAS)
-# - Exécutez le code suivant pour installer le package rMVP et ses dépendances
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install("rMVP")
+set.seed(42)  # Vous pouvez choisir n'importe quel nombre
+remaining_columns <- colnames(hmp_data)[12:ncol(hmp_data)]
+random_columns <- sample(remaining_columns, 100)
+selected_columns <- c(colnames(hmp_data)[1:11], random_columns)
+test <- hmp_data[, ..selected_columns]
+write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
-# Installer des packages supplémentaires nécessaires (ggplot2, data.table, dplyr, readxl)
-install.packages(c("ggplot2", "data.table", "dplyr", "readxl"))
-
-###############################################
-# 2. CHARGEMENT DES BIBLIOTHEQUES            #
-###############################################
-
-library(readxl)  # Pour lire les fichiers Excel
-library(rMVP)    # Pour l'analyse GWAS
-library(dplyr)   # Pour le traitement des données
-install.packages("openxlsx") #Effectuer l'ouverture de document XL et l'enregistrement de document excel
-library(readxl)
-
-###############################################
-# 3. PRETRAITEMENT DES DONNEES               #
-###############################################
-
-# Lire le fichier Excel
-genotype_data <- read_excel("exported_dataset.xlsx")
-
-# Définir la fonction calculate_maf
-calculate_maf <- function(genotype_data) {
-  # Supprimer les valeurs manquantes
-  genotype_data <- na.omit(genotype_data)
-  
-  # Vérifier s'il reste des valeurs non manquantes
-  if (length(genotype_data) == 0) {
-    return(NA)  # Retourner NA si toutes les valeurs sont manquantes
-  }
-  
-  allele_counts <- table(unlist(genotype_data))
-  maf <- min(allele_counts) / sum(allele_counts)
-  return(maf)
-}
-
-# Définir les colonnes importantes à conserver
-colonnes_importantes <- c("rs#", "alleles", "pos", "assembly#", "center", "protLSID", "assayLSID", "panelLSID", "QCcode")
-
-# Appliquer la fonction à chaque colonne SNP
-valeurs_maf <- apply(genotype_data[, -1], 2, calculate_maf)  # Supposons que la première colonne soit les ID SNP
-
-# Filtrer les SNPs avec des valeurs MAF NA et MAF < 0,05
-maf_valide <- !is.na(valeurs_maf) & valeurs_maf >= 0.05
-
-# Sous-ensemble des données pour conserver les colonnes importantes et les colonnes SNP valides
-donnees_filtrees <- genotype_data[, c(colonnes_importantes, names(genotype_data)[-1][maf_valide])]
-
-# Gérer les données manquantes (supprimer les SNPs avec >10% de données manquantes)
-seuil_manquant <- 0.1
-donnees_manquantes <- colMeans(is.na(donnees_filtrees[, -1]))  # Supposons que la première colonne soit les ID SNP
-donnees_filtrees <- donnees_filtrees[, c(TRUE, donnees_manquantes <= seuil_manquant)]
-
-# Enregistrer dans un nouveau fichier Excel
-write.xlsx(donnees_filtrees, "filtered_excel_data2.xlsx")
-
-# Écrire les données dans un fichier HapMap
-write.table(donnees_filtrees, file = "output_file.hmp.txt", 
-            sep = "\t", row.names = FALSE, quote = FALSE)
-
-###############################################
-# 4. EXECUTION DE L'ANALYSE GWAS             #
-###############################################
 
 # 4.1 Preparation des fichiers de genotype et phenotype
 # - Fichier de genotype (Hapmap) et phenotype (Phenotype_African.txt) sont fournis
 # - rMVP les charge et genere les fichiers de genotype, phenotype et carte genetique
-MVP.Data(fileHMP = "output_file.hmp.txt",  # Fichier Hapmap du genotype
+MVP.Data(fileHMP = "test_file.hmp.txt",  # Fichier Hapmap du genotype
          filePhe = "Phenotype_African.txt",  # Fichier de phénotype
-         sep.hmp = "\t",  # Separateur de colonnes dans le fichier Hapmap
          sep.phe = "\t",  # Separateur de colonnes dans le fichier de phenotype
-         SNP.effect = "Add",  # Modele additif d'effet des SNP
-         fileKin = FALSE,  # Pas de fichier de matrice de parenté (peut être calculé plus tard)
-         filePC = FALSE,  # Pas de fichier de composantes principales (sera calculé automatiquement)
          out = "mvp.hmp")  # Nom de la sortie (base de noms pour les fichiers generees)
 
 # 4.2 Chargement des fichiers generes par MVP.Data
@@ -92,33 +27,34 @@ MVP.Data(fileHMP = "output_file.hmp.txt",  # Fichier Hapmap du genotype
 
 genotype <- attach.big.matrix("mvp.hmp.geno.desc")  # Charge la matrice de genotype
 phenotype <- read.table("mvp.hmp.phe", header = TRUE)  # Charge le fichier de phénotype
-map <- read.table("mvp.hmp.geno.map", header = TRUE)  # Charge la carte genetique
+map <- read.table("mvp.hmp.geno.map", header = TRUE) # Charge la carte genetique
 
-###############################################
-# 5. EXECUTION DE L'ANALYSE GWAS AVEC rMVP  #
-###############################################
+genotype_matrix <- as.matrix(genotype)
+pca_results <- prcomp(genotype_matrix, scale. = TRUE)  # Effectue une ACP sur le genotype
+explained_variance <- pca_results$sdev^2 / sum(pca_results$sdev^2)
+plot(explained_variance, type = "b", pch = 19,  
+     xlab = "Composante principale", 
+     ylab = "Proportion de la variance expliquée",
+     main = "Scree Plot", xlim = c(1, 30))
 
-# - Boucle sur chaque phenotype (colonne 2 à n de phenotype)
-# - Applique 3 methodes GLM, MLM et FarmCPU
 
+# 9. Exporter le fichier filtré
+write.table(filtered_hmp, file = "filtered_hmp.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+
+
+# 6.3 Incorporation des covariables dans l'analyse GWAS
 for(i in 2:ncol(phenotype)){
   imMVP <- MVP(
     phe = phenotype[, c(1, i)],  # Extraire la colonne du phenotype correspondant
     geno = genotype,  # Matrice de genotype
     map = map,  # Carte genetique
-    nPC.GLM = 5,  # Inclure 5 composantes principales dans GLM
-    nPC.MLM = 3,  # Inclure 3 composantes principales dans MLM
-    nPC.FarmCPU = 3,  # Inclure 3 composantes principales dans FarmCPU
+    nPC.MLM = 4,  # Inclure 4 composantes principales dans MLM
     maxLine = 10000,  # Nombre maximal de lignes traitees 
     vc.method = "BRENT",  # Methode d'estimation des composantes de variance
     method.bin = "static",  # Methode de binning pour FarmCPU
     threshold = 0.05,  # Seuil de significativite pour le GWAS
-    method = c("GLM", "MLM", "FarmCPU"),  # Methodes d'analyse GWAS
+    method = "MLM",  # Methodes d'analyse GWAS
     file.output = c("pmap", "pmap.signal", "plot", "log")  # Fichiers de sortie
   )
   gc()  # Nettoie la memoire a chaque iteration pour eviter l'accumulation de memoire
 }
-
-###############################################
-# FIN DU SCRIPT                             #
-###############################################
