@@ -29,6 +29,7 @@ genotype <- attach.big.matrix("mvp.hmp.geno.desc")  # Charge la matrice de genot
 phenotype <- read.table("mvp.hmp.phe", header = TRUE)  # Charge le fichier de phénotype
 map <- read.table("mvp.hmp.geno.map", header = TRUE) # Charge la carte genetique
 
+# Pour déterminer le nombre d'axes significatives à mettre dans l'analyse MVP
 genotype_matrix <- as.matrix(genotype)
 pca_results <- prcomp(genotype_matrix, scale. = TRUE)  # Effectue une ACP sur le genotype
 explained_variance <- pca_results$sdev^2 / sum(pca_results$sdev^2)
