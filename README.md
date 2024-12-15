@@ -20,27 +20,19 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 1. Installez R et RStudio en suivant les instructions disponibles sur [CRAN](https://cran.r-project.org/).
 2. Installez les packages nécessaires dans R :
    ```r
-   install.packages(c("rMVP","ggplot2", "data.table" "readxl", "dplyr"))
+   install.packages(c("rMVP","ggplot2", "data.table" "bigmemory", "dplyr"))
 
 ## Prétraitement des données
 
 1. Chargez vos fichiers de génotype et de phénotype.
 2. Filtrez les SNPs avec une fréquence allélique mineure (MAF) inférieure à 0,05 :
-```r
-genotype <- genotype[genotype$MAF >= 0.05, ]
-```
-3. Générez des covariables via une analyse en composantes principales (ACP) pour corriger la structure de la population.
+  Ceci peut être réalisé avec le logiciel Tassel 5.0 en utilisant un seuil de 0,05. Les SNPs avec des fréquences alléliques égales ou inférieures à 0,05 devraient être filtrées.
+
+4. Réaliser analyse en composantes principales (ACP) permet de déterminer le nombre de composantes qui résument le mieux nos données de génotype. L'analyse inclue la génération d'un scree plot qui permet de décider du nombre de paramètres à inclure à l'argument nPC.MLM de la fonction MVP().
 
 ## Exécution de l'analyse GWAS
 
-1. Chargez les données dans rMVP :
-```r
-MVP.Data(fileGenotype = "genotype.txt", filePhenotype = "phenotype.txt")
-```
-2. Exécutez l'analyse GWAS
-```r
-MVP.GWAS(file = "data", covariates = cov_matrix)
-```
+Le script et ses commentaires présents dans le répertoire Script/ devraient vous guider au travers des étapes d'analyse GWAS des données présentes dans le répertoire Data/
 
 ## Résultats attendus
 
