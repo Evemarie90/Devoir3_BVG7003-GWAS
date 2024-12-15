@@ -39,8 +39,7 @@ Le script et ses commentaires présents dans le répertoire Script/ devraient vo
 Plusieurs graphiques sont générés lors de l'analyse avec le paquet rMVP. 
 Parmis ceux-ci, on peut retrouver; 
 
-   un graphique de Manhattan montrant les SNPs significatifs; 
-   un graphique QQ montrant l'absence ou la présence d'inflation génomique.
+un graphique de Manhattan montrant les SNPs significatifs et un graphique QQ montrant l'absence ou la présence d'inflation génomique.
 
 
 Un exemple des résultats est présents dans le répertoire Résultats/ du Github.
