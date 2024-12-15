@@ -24,11 +24,11 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 
 ## Prétraitement des données
 
-1. Chargez vos fichiers de génotype et de phénotype.
-2. Filtrez les SNPs avec une fréquence allélique mineure (MAF) inférieure à 0,05 :
+1. Charger les fichiers de génotype et de phénotype.
+2. Filtrer les SNPs avec une fréquence allélique mineure (MAF) inférieure à 0,05 :
   Ceci peut être réalisé avec le logiciel Tassel 5.0 en utilisant un seuil de 0,05. Les SNPs avec des fréquences alléliques égales ou inférieures à 0,05 devraient être filtrées.
 
-4. Réaliser analyse en composantes principales (ACP) permet de déterminer le nombre de composantes qui résument le mieux nos données de génotype. L'analyse inclue la génération d'un scree plot qui permet de décider du nombre de paramètres à inclure à l'argument nPC.MLM de la fonction MVP().
+4. Réaliser une analyse en composantes principales (ACP), qui permet de déterminer le nombre de composantes qui résument le mieux nos données de génotype. L'analyse inclue la génération d'un scree plot qui permet de décider du nombre de paramètres à inclure à l'argument nPC.MLM de la fonction MVP(). Un exemple de ce graphique peut être visualisé dans le répertoire Résultats/ du présent git.
 
 ## Exécution de l'analyse GWAS
 
