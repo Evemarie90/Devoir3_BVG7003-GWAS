@@ -36,17 +36,17 @@ Le script et ses commentaires présents dans le répertoire Script/ devraient vo
 
 Pour réaliser l'analyse, il faut initialiser le répertoire de travail dans le dossier où se trouvent les données génotypiques et phénotypiques à utiliser pour le GWAS. 
 L'exécution comprend la manipulation des données afin de produire des données test. Ces données peuvent aussi être retrouvées dans le dossier Data/ du présent Git.
-Pour réaliser l'analyse avec les données d'origine / avec les données tests, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse.
+Pour réaliser l'analyse avec les données d'origine / avec les données test, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse (données test vs données d'origine).
 
 ## Résultats attendus
 
 Plusieurs graphiques sont générés lors de l'analyse avec le paquet rMVP. 
 Parmis ceux-ci, on peut retrouver; 
 
-un graphique de Manhattan montrant les SNPs significatifs et un graphique QQ montrant l'absence ou la présence d'inflation génomique.
+Un graphique de Manhattan montrant les SNPs significatifs et un graphique QQ montrant l'absence ou la présence d'inflation génomique.
 
 
-Un exemple des résultats est présents dans le répertoire Résultats/ du Github.
+Un exemple de résultats est présenté dans le répertoire Résultats/ du Github.
 
 ## Exemple d'interprétation
 
