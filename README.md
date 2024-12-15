@@ -34,6 +34,10 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 
 Le script et ses commentaires présents dans le répertoire Script/ devraient vous guider au travers des étapes de l'analyse GWAS des données génomiques et phénotypiques contenues dans le répertoire Data/.
 
+Pour réaliser l'analyse, il faut initialiser le répertoire de travail dans le dossier où se trouvent les données génotypiques et phénotypiques à utiliser pour le GWAS. 
+L'exécution comprend la manipulation des données afin de produire des données test. Ces données peuvent aussi être retrouvées dans le dossier Data/ du présent Git.
+Pour réaliser l'analyse avec les données d'origine / avec les données tests, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse.
+
 ## Résultats attendus
 
 Plusieurs graphiques sont générés lors de l'analyse avec le paquet rMVP. 
