@@ -32,12 +32,17 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 
 ## Exécution de l'analyse GWAS
 
-Le script et ses commentaires présents dans le répertoire Script/ devraient vous guider au travers des étapes d'analyse GWAS des données présentes dans le répertoire Data/
+Le script et ses commentaires présents dans le répertoire Script/ devraient vous guider au travers des étapes de l'analyse GWAS des données génomiques et phénotypiques contenues dans le répertoire Data/.
 
 ## Résultats attendus
 
-Un graphique de Manhattan montrant les SNPs significatifs.
-Un graphique QQ montrant l'absence ou la présence d'inflation génomique.
+Plusieurs graphiques sont générés lors de l'analyse avec le paquet rMVP. 
+Parmis ceux-ci, on peut retrouver; 
+   un graphique de Manhattan montrant les SNPs significatifs.
+   un graphique QQ montrant l'absence ou la présence d'inflation génomique.
+
+
+Un exemple des résultats est présents dans le répertoire Résultats/ du Github.
 
 ## Exemple d'interprétation
 
