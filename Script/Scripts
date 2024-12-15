@@ -1,62 +1,137 @@
-library(data.table)
-library(rMVP)
-library(bigmemory)
+# ===============================
+# 1. Chargement des bibliothèques
+# ===============================
 
-setwd("C:/Users/joell/Desktop/Devoir3_bioinfo")
-hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
-
-# Pour sélectionner aléatoirement 100 échantillons pour tester le code
-set.seed(42)  # Vous pouvez choisir n'importe quel nombre
-remaining_columns <- colnames(hmp_data)[12:ncol(hmp_data)]
-random_columns <- sample(remaining_columns, 100)
-selected_columns <- c(colnames(hmp_data)[1:11], random_columns)
-test <- hmp_data[, ..selected_columns]
-write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+# Chargement des bibliothèques nécessaires pour la manipulation des données et l'analyse GWAS
+library(data.table)  # Pour la lecture rapide des fichiers de type .txt ou .csv
+library(rMVP)  # Pour l'analyse GWAS avec la méthode MVP
+library(bigmemory)  # Pour la gestion efficace des matrices de grande taille
 
 
-# 4.1 Preparation des fichiers de genotype et phenotype
-# - Fichier de genotype (Hapmap) et phenotype (Phenotype_African.txt) sont fournis
-# - rMVP les charge et genere les fichiers de genotype, phenotype et carte genetique
-MVP.Data(fileHMP = "test_file.hmp.txt",  # Fichier Hapmap du genotype
-         filePhe = "Phenotype_African.txt",  # Fichier de phénotype
-         sep.phe = "\t",  # Separateur de colonnes dans le fichier de phenotype
-         out = "mvp.hmp")  # Nom de la sortie (base de noms pour les fichiers generees)
+# ===============================
+# 2. Chargement et préparation du fichier Hapmap
+# ===============================
 
-# 4.2 Chargement des fichiers generes par MVP.Data
-# - Charge les fichiers de genotype, phenotype et carte genetique
-# - Les fichiers .desc, .phe et .map sont créés automatiquement
+# Définition du répertoire de travail
+setwd("C:/Users/repertoire/du/Github")  #À changer selon l'utilisateur: définit le répertoire de travail à l'emplacement où le github a été cloné
 
-genotype <- attach.big.matrix("mvp.hmp.geno.desc")  # Charge la matrice de genotype
-phenotype <- read.table("mvp.hmp.phe", header = TRUE)  # Charge le fichier de phénotype
-map <- read.table("mvp.hmp.geno.map", header = TRUE) # Charge la carte genetique
+# Chargement du fichier Hapmap contenant les données de génotype
+hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)  # Lecture du fichier Hapmap
 
-# Pour déterminer le nombre d'axes significatives à mettre dans l'analyse MVP
-genotype_matrix <- as.matrix(genotype)
-pca_results <- prcomp(genotype_matrix, scale. = TRUE)  # Effectue une ACP sur le genotype
-explained_variance <- pca_results$sdev^2 / sum(pca_results$sdev^2)
-plot(explained_variance, type = "b", pch = 19,  
+# ===============================
+# 3. Sélection aléatoire de 100 échantillons pour tester les analyses sur un plus petit jeu de données (données test)
+# ===============================
+
+set.seed(42)  # Rend l'aléatoire reproductible
+remaining_columns <- colnames(hmp_data)[12:ncol(hmp_data)]  # Sélectionne toutes les colonnes de génotype
+random_columns <- sample(remaining_columns, 100)  # Sélectionne aléatoirement 100 colonnes
+selected_columns <- c(colnames(hmp_data)[1:11], random_columns)  # Conserve les métadonnées et les 100 colonnes aléatoires
+
+# Création du fichier de test
+test <- hmp_data[, ..selected_columns]  # Sélectionne les colonnes d'intérêt
+write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)  # Sauvegarde le fichier de test
+
+
+# ===============================
+# 4.1 Préparation des fichiers de génotype et de phénotype avec les données test
+# ===============================
+
+# MVP.Data crée les fichiers de génotype, de phénotype et de carte génétique à partir des fichiers d'origine et du jeu de données test créé précédement
+MVP.Data(fileHMP = "test_file.hmp.txt",  # Fichier Hapmap du génotype
+         filePhe = "Phenotype_African.txt",  # Fichier contenant les phénotypes
+         sep.phe = "\t",  # Séparateur de colonnes du fichier de phénotype
+         out = "mvp.hmp.test")  # Préfixe des noms de fichiers de sortie générés
+
+# ===============================
+# 4.2 Préparation des fichiers de génotype et de phénotype avec les données d'origine
+# ===============================
+
+# MVP.Data crée les fichiers de génotype, de phénotype et de carte génétique à partir des fichiers d'origine et du jeu de données test créé précédement
+MVP.Data(fileHMP = "African_SNPs.hmp.txt",  # Fichier Hapmap du génotype
+         filePhe = "Phenotype_African.txt",  # Fichier contenant les phénotypes
+         sep.phe = "\t",  # Séparateur de colonnes du fichier de phénotype
+         out = "mvp.hmp")  # Préfixe des noms de fichiers de sortie générés
+
+# ===============================
+# 5.1 Chargement des fichiers de génotype, phénotype et carte génétique avec données test
+# ===============================
+
+# Lecture des fichiers de sortie générés par MVP.Data
+
+# Fichier de génotype
+genotype_test <- attach.big.matrix("mvp.hmp.test.geno.desc")  # Attachement de la matrice de génotype
+
+# Fichier de phénotype
+phenotype_test <- read.table("mvp.hmp.test.phe", header = TRUE)  # Lecture du fichier de phénotype
+
+# Fichier de carte génétique
+map_test <- read.table("mvp.hmp.test.geno.map", header = TRUE)  # Lecture de la carte génétique
+
+# ===============================
+# 5.2 Chargement des fichiers de génotype, phénotype et carte génétique avec données d'origine
+# ===============================
+
+# Lecture des fichiers de sortie générés par MVP.Data
+
+# Fichier de génotype
+genotype <- attach.big.matrix("mvp.hmp.geno.desc")  # Attachement de la matrice de génotype
+
+# Fichier de phénotype
+phenotype <- read.table("mvp.hmp.phe", header = TRUE)  # Lecture du fichier de phénotype
+
+# Fichier de carte génétique
+map <- read.table("mvp.hmp.geno.map", header = TRUE)  # Lecture de la carte génétique
+
+# ===============================
+# 6. Analyse en composantes principales (ACP) avec les données d'origine
+# ===============================
+
+# Conversion de la matrice de génotype pour réaliser l'ACP
+genotype_matrix <- as.matrix(genotype)  # Conversion de la matrice de génotype en matrice standard
+
+# Réalisation de l'ACP
+pca_results <- prcomp(genotype_matrix, scale. = TRUE)  # ACP avec centrage et réduction
+
+# Calcul des eigenvalues
+eigenvalues <- pca_results$sdev^2  # Calcul des valeurs propres (eigenvalues)
+
+# Visualisation du Scree Plot
+plot(eigenvalues, type = "b", pch = 19,  
      xlab = "Composante principale", 
-     ylab = "Proportion de la variance expliquée",
-     main = "Scree Plot", xlim = c(1, 30))
+     ylab = "Valeur propre (eigenvalue)", 
+     main = "Scree Plot", xlim = c(1, 30))  # Affichage des 30 premières composantes
+#Le scree plot précédent nous permet de déterminer le nombre d'axes significatives qui représentent le plus simplement nos données de génotype d'origine. À l'aide de ce graphique, nous avons déterminé que 4 axes forment le "coude" et expliquent le mieux nos données. Après les 4 premiers points, la part explicative de l'ajout des axes subséquentes devient moins importante.
+
+# ===============================
+# 7. Filtrage fichier Hapmap 
+# ===============================
+
+# Filtrage des SNPs (par exemple, élimination des SNPs selon les critères de MAFs au seuil de 0.05)
+# Le filtrage n'est pas présenté ici : les données de génotype de cette analyse ont déjà été filtrées selon ce critère à l'aide du logiciel Tassel 5.0
 
 
-# 9. Exporter le fichier filtré
-write.table(filtered_hmp, file = "filtered_hmp.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+# ===============================
+# 8. Analyse GWAS avec les données test / d'origine 
+# ===============================
 
+# Pour l'analyse des données d'origine: 
+# 1. Dans la boucle for, changer "phenotype_test" pour "phenotype"
+# 2. Exécuter les lignes en commentaire en retirant le "#" en début de ligne et interchanger les lignes exécutées des données test pour qu'elles deviennnent des commentaires
 
-# 6.3 Incorporation des covariables dans l'analyse GWAS
-for(i in 2:ncol(phenotype)){
+for(i in 2:ncol(phenotype_test)) { # Pour chaque colonne de phénotype (en excluant l’identifiant)
   imMVP <- MVP(
-    phe = phenotype[, c(1, i)],  # Extraire la colonne du phenotype correspondant
-    geno = genotype,  # Matrice de genotype
-    map = map,  # Carte genetique
-    nPC.MLM = 4,  # Inclure 4 composantes principales dans MLM
-    maxLine = 10000,  # Nombre maximal de lignes traitees 
-    vc.method = "BRENT",  # Methode d'estimation des composantes de variance
-    method.bin = "static",  # Methode de binning pour FarmCPU
-    threshold = 0.05,  # Seuil de significativite pour le GWAS
-    method = "MLM",  # Methodes d'analyse GWAS
+    phe = phenotype_test[, c(1, i)],  # Extrait la colonne de phénotype correspondante
+    #phe = phenotype[, c(1, i)], # utiliser cette ligne pour l'analyse des données d'origine
+    geno = genotype_test,  # Fichier de génotype
+    #geno = genotype, # utiliser cette ligne pour l'analyse des données d'origine
+    map = map_test,  # Carte génétique
+    #map = map, # utiliser cette ligne pour l'analyse des données d'origine
+    nPC.MLM = 4,  # Nombre de composantes principales à inclure (déterminées par l'analyse du scree plot)
+    maxLine = 10000,  # Limite du nombre de lignes traitées
+    vc.method = "BRENT",  # Méthode d'estimation des composantes de variance
+    threshold = 0.05,  # Seuil de significativité
+    method = "MLM",  # Méthode d'analyse statistique
     file.output = c("pmap", "pmap.signal", "plot", "log")  # Fichiers de sortie
   )
-  gc()  # Nettoie la memoire a chaque iteration pour eviter l'accumulation de memoire
+  gc()  # Nettoyage de la mémoire à chaque itération
 }
