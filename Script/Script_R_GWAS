@@ -100,7 +100,7 @@ plot(eigenvalues, type = "b", pch = 19,
      xlab = "Composante principale", 
      ylab = "Valeur propre (eigenvalue)", 
      main = "Scree Plot", xlim = c(1, 30))  # Affichage des 30 premières composantes
-#Le scree plot précédent nous permet de déterminer le nombre d'axes significatives qui représentent le plus simplement nos données de génotype d'origine. À l'aide de ce graphique, nous avons déterminé que 4 axes forment le "coude" et expliquent le mieux nos données. Après les 4 premiers points, la part explicative de l'ajout des axes subséquentes devient moins importante.
+#Le scree plot précédent nous permet de déterminer le nombre d'axes significatives qui représentent le plus simplement nos données de génotype d'origine. À l'aide de ce graphique, nous avons déterminé que 5 axes forment le "coude" et expliquent le mieux nos données. Après les 5 premiers points, la part explicative de l'ajout des axes subséquentes devient moins importante.
 
 # ===============================
 # 7. Filtrage fichier Hapmap 
@@ -126,7 +126,7 @@ for(i in 2:ncol(phenotype_test)) { # Pour chaque colonne de phénotype (en exclu
     #geno = genotype, # utiliser cette ligne pour l'analyse des données d'origine
     map = map_test,  # Carte génétique
     #map = map, # utiliser cette ligne pour l'analyse des données d'origine
-    nPC.MLM = 4,  # Nombre de composantes principales à inclure (déterminées par l'analyse du scree plot)
+    nPC.MLM = 5,  # Nombre de composantes principales à inclure (déterminées par l'analyse du scree plot)
     maxLine = 10000,  # Limite du nombre de lignes traitées
     vc.method = "BRENT",  # Méthode d'estimation des composantes de variance
     threshold = 0.05,  # Seuil de significativité
