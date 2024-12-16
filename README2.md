@@ -170,7 +170,7 @@ for(i in 2:ncol(phenotype_test)) {
 - **Paramètres Clés** :  
    - **`nPC.MLM = 5`** : Correction de structure basée sur 5 PC.  
    - **`threshold = 0.05`** : Seuil de significativité pour les SNPs.
-   - **`Pour obtenir les analyses avec les données complètes`** : Remplacez les termes "phenotype_test" et "genotype_test" par "phenotype" et "genotype"
+- **Pour obtenir les analyses avec les données complètes** : Remplacez les termes "phenotype_test" et "genotype_test" par "phenotype" et "genotype"
 
 ---
 
