@@ -174,27 +174,98 @@ for(i in 2:ncol(phenotype_test)) {
 
 ---
 
-## **10. Interprétation des Figures et Résultats**
+1### **10. Interprétation des Figures et Résultats**
 
-### **10.1 Scree Plot (ACP)**  
-- **Objectif** : Identifier le nombre optimal de PC.  
-- **Interprétation** : Le **coude** indique le nombre de PC (5 ici).  
-
-### **10.2 Manhattan Plot**  
-- **Axe X** : Position des SNPs.  
-- **Axe Y** : -log10(p-value).  
-- **Interprétation** : Les pics dépassant la ligne seuil représentent des SNPs associés significativement au phénotype.
-La localisation des pics permet d'identifier des régions génomiques d'intérêt.  
-
-### **10.3 Diagrammes Circulaires**  
-- Visualisent la distribution des SNPs sur les chromosomes.  
-- **Interprétation** : Les SNPs significatifs se trouvent éloignés du centre.
-
-### **10.4 Fichier des SNPs Significatifs**  
-- **`pmap.signal`** : Liste des SNPs significatifs avec ID, position et p-value.  
-- **Interprétation** : Ces SNPs peuvent être explorés pour identifier des gènes candidats.
+L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** (polymorphismes nucléotidiques simples) et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
 
 ---
+
+### **10.1 Scree Plot (Analyse en Composantes Principales - ACP)**
+
+#### **Objectif :**
+Le Scree Plot est un graphique essentiel pour évaluer l'importance des différentes composantes principales (PC) dans une analyse en composantes principales (ACP). L'objectif principal de l'ACP est de réduire la dimensionnalité des données tout en conservant un maximum de variance.
+
+#### **Interprétation :**
+- **Axe X** : Représente les **composantes principales** (PC). Chaque composante principale représente une direction dans l'espace de données qui maximise la variance.
+- **Axe Y** : Représente la **valeur propre** de chaque composante principale, c'est-à-dire la quantité de variance expliquée par cette composante.
+
+Le **Scree Plot** permet de déterminer combien de composantes principales doivent être retenues dans l'analyse. La **règle du coude** (ou *elbow rule*) est utilisée pour choisir le nombre de composantes principales à conserver.
+
+- Le **coude** du graphique est généralement visible lorsque la pente des valeurs propres diminue de manière significative. Avant le coude, chaque composante principale apporte une réduction substantielle de la variance, mais après ce point, l'ajout de nouvelles composantes principales contribue beaucoup moins à expliquer la variance.
+  
+Dans notre exemple :
+- **5 composantes principales** sont retenues après l'observation du coude dans le graphique. Cela signifie que les 5 premières composantes expliquent suffisamment la variance des données, et il n'est pas nécessaire d'inclure davantage de composantes.
+
+---
+
+### **10.2 Manhattan Plot**
+
+#### **Objectif :**
+Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'une analyse GWAS. Elle permet d'identifier les **SNPs associés** au trait d'intérêt en affichant les p-values des tests statistiques.
+
+#### **Structure du Graphique :**
+
+- **Axe X :** Représente la **position génomique** des SNPs sur les chromosomes. Chaque point sur l'axe X correspond à un SNP particulier. Les SNPs sont regroupés par chromosome, et chaque chromosome est représenté par un secteur sur l'axe X. Cela permet de voir la répartition des SNPs sur le génome.
+  
+  - **Position des SNPs** : Les SNPs sont ordonnés selon leur position sur le chromosome. Cela permet d'identifier les régions génomiques où se concentrent les SNPs analysés.
+  
+- **Axe Y :** Représente les **-log10(p-values)** des tests d'association réalisés pour chaque SNP. Les **p-values** sont transformées en **valeurs -log10** pour faciliter l'interprétation. Une **valeur élevée sur l'axe Y** indique une **faible p-value**, et donc une **association significative** entre le SNP et le phénotype.
+
+#### **Interprétation :**
+- Les **points élevés** sur l'axe Y correspondent aux SNPs ayant des **p-values faibles**, c'est-à-dire des SNPs qui sont fortement associés au trait d'intérêt.
+- La **ligne de seuil** est souvent tracée sur le graphique (par exemple à **-log10(0.05)** ou une valeur similaire), indiquant un seuil au-delà duquel les SNPs sont considérés comme **significativement associés** au trait. Les SNPs au-dessus de cette ligne sont ceux que l'on retient pour des analyses plus poussées.
+  
+**Exemple d'interprétation :**
+- Un pic de SNPs au-dessus du seuil peut suggérer une **région génomique d'intérêt**, potentiellement impliquée dans le trait étudié.
+- L'intensité et la localisation des pics peuvent également fournir des indices sur des **gènes candidats** ou des **régions génétiques** importantes.
+
+---
+
+### **10.3 Diagrammes Circulaires**
+
+#### **Objectif :**
+Les **diagrammes circulaires** sont utilisés pour visualiser de manière compacte et esthétique la **répartition des SNPs** significatifs sur le génome, tout en maintenant une structure chromosomique ordonnée. C’est une variante du **Manhattan Plot** classique, mais avec un agencement circulaire.
+
+#### **Structure du Graphique :**
+
+- **Disposition Circulaire des Chromosomes :** Le diagramme est constitué de plusieurs **secteurs** représentant chacun un **chromosome**. Chaque secteur est une section du cercle où la position des SNPs est représentée en fonction de leur **position physique** sur le chromosome.
+  
+  - **Positions des SNPs** : Sur chaque chromosome, les SNPs sont représentés le long de l'arc du cercle, suivant leur position sur le chromosome. Les SNPs sont espacés de manière uniforme le long de chaque secteur.
+  
+- **Position des SNPs sur l'axe Y** : Les **points** sur l'axe vertical du diagramme indiquent la valeur de **-log10(p-value)** de chaque SNP. Comme dans le Manhattan Plot traditionnel, plus un point est élevé, plus l’association du SNP avec le trait est significative.
+
+#### **Interprétation :**
+- Les **SNPs significatifs** apparaissent comme des **points éloignés du centre du cercle**. Plus un SNP est significatif, plus il sera situé près de la périphérie du cercle.
+- Les **points situés près du centre** du diagramme correspondent à des SNPs ayant des **p-values plus élevées**, indiquant qu'ils ne sont pas associés de manière significative au trait d'intérêt.
+- La **répartition des SNPs** autour du cercle permet d'identifier rapidement les régions chromosomiques où se concentrent les SNPs significatifs.
+
+**Exemple d'interprétation :**
+- Si plusieurs **pics significatifs** sont observés dans une région chromosomique particulière, cela pourrait suggérer une **zone génomique d'intérêt** liée au trait étudié.
+
+---
+
+### **10.4 Fichier des SNPs Significatifs**
+
+#### **Objectif :**
+Le fichier **`pmap.signal`** contient les **détails des SNPs significatifs** après l'analyse GWAS. Ce fichier est crucial pour une exploration plus approfondie des SNPs associés et pour la recherche de gènes candidats.
+
+#### **Structure du fichier :**
+Le fichier contient généralement les informations suivantes :
+- **ID du SNP** : Un identifiant unique pour chaque SNP analysé.
+- **Position** : La position physique du SNP sur le chromosome.
+- **P-value** : La p-value associée au SNP, représentant l'intensité de l'association avec le phénotype.
+  
+#### **Interprétation :**
+- **SNPs significatifs** : Les SNPs dont la **p-value** est inférieure au seuil de significativité défini sont considérés comme **significativement associés** au trait.
+- **Identification de gènes candidats** : Ces SNPs peuvent être situés près de gènes connus ou dans des régions du génome qui méritent une exploration approfondie pour comprendre leurs rôles potentiels dans le trait d'intérêt.
+
+**Exemple d'interprétation :**
+- Un SNP situé près d'un gène spécifique dans le fichier **`pmap.signal`** pourrait être une **cible potentielle** pour une étude fonctionnelle, permettant de vérifier si ce gène joue un rôle dans l'expression du phénotype étudié.
+
+---
+
+### **Conclusion :**
+L'interprétation détaillée des figures GWAS, telles que les **Scree Plots**, **Manhattan Plots**, **Diagrammes Circulaires**, et des fichiers de **SNPs significatifs** (comme **`pmap.signal`**), permet de repérer des SNPs et des régions chromosomiques qui méritent une attention particulière pour de futures analyses. Ces résultats peuvent aider à identifier des **gènes candidats** ou des **régions génétiques** impliquées dans un trait complexe, et servir de base pour des recherches supplémentaires.
 
 ## **11. Conclusion**
 
