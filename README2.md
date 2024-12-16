@@ -20,7 +20,8 @@
     - 10.2 Manhattan Plot  
     - 10.3 Diagrammes Circulaires  
     - 10.4 Fichier des SNPs Significatifs  
-11. [Conclusion](#11-conclusion)
+11. [Dépannage](#11-dépannage)
+12. [Conclusion](#11-conclusion)
 
 ---
 
@@ -264,9 +265,22 @@ Le fichier contient généralement les informations suivantes :
 
 ---
 
-### **Conclusion :**
-L'interprétation détaillée des figures GWAS, telles que les **Scree Plots**, **Manhattan Plots**, **Diagrammes Circulaires**, et des fichiers de **SNPs significatifs** (comme **`pmap.signal`**), permet de repérer des SNPs et des régions chromosomiques qui méritent une attention particulière pour de futures analyses. Ces résultats peuvent aider à identifier des **gènes candidats** ou des **régions génétiques** impliquées dans un trait complexe, et servir de base pour des recherches supplémentaires.
+## **11. Dépannage ##
+Advenant que le téléchargement du fichier hmp entraine la modification de l'alignement des colonnes de ce dernier vous pouvez convertir votre fichier hmp en fichier excel (copier-coller les données). Ensuite, vous pouvez utiliser le script ci-dessous pour re-convertir vos données en hmp :
 
-## **11. Conclusion**
+#### Lire le fichier excel dans R ####
+```r
+library(readxl)
+
+excel_data <- read_excel("excel_dataset.xlsx")
+```
+
+#### Écrire les données dans un fichier hmp ####
+```r
+Rstudio write.table(excel_data, file = "output_file.hmp.txt", 
+            sep = "\t", row.names = FALSE, quote = FALSE)
+```
+
+## **12. Conclusion**
 
 Ce script, exécuté sous **RStudio**, offre un workflow complet pour l'analyse GWAS. Les résultats obtenus permettent d'identifier des **SNPs significatifs** et des **régions génomiques** d'intérêt pour des études ultérieures.
