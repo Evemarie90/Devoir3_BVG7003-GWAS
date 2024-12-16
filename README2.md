@@ -26,7 +26,7 @@
 
 ## **1. Introduction**
 
-Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**.
+Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. Téléchargez les fichiers African_SNPs.hmp.txt et Phenotype_African.txt présent dans la section Data pour réaliser l'analyse. 
 
 ---
 
@@ -170,6 +170,7 @@ for(i in 2:ncol(phenotype_test)) {
 - **Paramètres Clés** :  
    - **`nPC.MLM = 5`** : Correction de structure basée sur 5 PC.  
    - **`threshold = 0.05`** : Seuil de significativité pour les SNPs.
+   - **`Pour obtenir les analyses avec les données complètes`** : Remplacez les termes "phenotype_test" et "genotype_test" par "phenotype" et "genotype"
 
 ---
 
