@@ -263,6 +263,32 @@ Le fichier contient généralement les informations suivantes :
 **Exemple d'interprétation :**
 - Un SNP situé près d'un gène spécifique dans le fichier **`pmap.signal`** pourrait être une **cible potentielle** pour une étude fonctionnelle, permettant de vérifier si ce gène joue un rôle dans l'expression du phénotype étudié.
 
+### **10.5 Graphiques QQplot**
+Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\) obtenues à partir des statistiques MLM (Mixed Linear Model) comparée à la distribution théorique attendue sous l'hypothèse nulle.
+
+### Axes :
+- **Axe X** : Valeurs attendues de \(-\log_{10}(p)\) sous l'hypothèse nulle.
+- **Axe Y** : Valeurs observées de \(-\log_{10}(p)\).
+
+### Éléments du graphique :
+- **Ligne rouge** : Distribution théorique sous l'hypothèse nulle.
+- **Points bleus** : Valeurs observées de \(-\log_{10}(p)\).
+- **Bande bleue** : Intervalle de confiance autour de la distribution théorique.
+
+---
+
+## Interprétation du graphique
+1. **Position des points bleus** :
+   - Les **points bleus** sont situés **en dessous** de la ligne rouge.
+
+2. **Signification** :
+   - Les valeurs observées de \(-\log_{10}(p)\) sont **inférieures** aux valeurs attendues.
+   - Cela signifie que les p-valeurs observées sont plus **grandes** que prévu sous l'hypothèse nulle.
+
+3. **Conclusion** :
+   - Il n'y a **pas de signal fort** dans les données analysées. Les résultats suggèrent que les associations testées ne sont pas significatives.
+   - Le modèle MLM semble **conservateur**, ce qui peut réduire le risque de faux positifs mais augmenter celui de **faux négatifs** (signal réel manqué).
+
 ---
 
 ## **11. Dépannage ##
