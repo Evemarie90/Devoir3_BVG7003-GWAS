@@ -13,7 +13,7 @@ library(bigmemory)  # Pour la gestion efficace des matrices de grande taille
 # ===============================
 
 # Définition du répertoire de travail
-setwd("C:/Users/repertoire/du/Github")  #À changer selon l'utilisateur: définit le répertoire de travail à l'emplacement où le github a été cloné
+setwd("./")  # Définit le répertoire de travail actuel
 
 # Chargement du fichier Hapmap contenant les données de génotype
 hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)  # Lecture du fichier Hapmap
