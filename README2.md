@@ -1,16 +1,58 @@
-# **README - Explication Détaillée du Script GWAS**
+## **README - Analyse GWAS avec R et rMVP**
+
+---
+
+## **Table des Matières**
+
+1. [Introduction](#1-introduction)  
+2. [Logiciel Requis](#2-logiciel-requis)  
+3. [Chargement des Bibliothèques](#3-chargement-des-bibliothèques)  
+4. [Chargement et Préparation du Fichier Hapmap](#4-chargement-et-préparation-du-fichier-hapmap)  
+5. [Sélection d'un Sous-Ensemble de 100 Échantillons](#5-sélection-dun-sous-ensemble-de-100-échantillons)  
+6. [Conversion des Données pour rMVP](#6-conversion-des-données-pour-rmvp)  
+   - 6.1 Données de Test  
+   - 6.2 Données Complètes  
+7. [Chargement des Données Transformées](#7-chargement-des-données-transformées)  
+8. [Analyse en Composantes Principales (ACP)](#8-analyse-en-composantes-principales-acp)  
+9. [Analyse GWAS avec le Modèle MLM](#9-analyse-gwas-avec-le-modèle-mlm)  
+10. [Interprétation des Figures et Résultats](#10-interprétation-des-figures-et-résultats)  
+    - 10.1 Scree Plot (ACP)  
+    - 10.2 Manhattan Plot  
+    - 10.3 Diagrammes Circulaires  
+    - 10.4 Fichier des SNPs Significatifs  
+11. [Conclusion](#11-conclusion)
 
 ---
 
 ## **1. Introduction**
 
-Ce script permet de réaliser une **analyse GWAS** (Genome-Wide Association Study) sur des données de génotype et de phénotype. Il utilise des bibliothèques R pour charger, traiter et analyser les données, générer des visualisations (ACP, Manhattan Plot, etc.), et identifier les SNPs significatifs. Ce document décrit **chaque partie du script** en détail et explique comment interpréter les résultats.
+Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**.
 
 ---
 
-## **2. Description Détaillée du Script**
+## **2. Logiciel Requis**
 
-### **2.1 Chargement des bibliothèques**
+- **R** (version ≥ 4.0.0)  
+- **RStudio** : Environnement de développement intégré (IDE) recommandé pour R.  
+- **Packages nécessaires** :  
+   - `data.table`  
+   - `rMVP`  
+   - `bigmemory`  
+
+### **Installation des Packages**
+
+Pour installer les bibliothèques dans RStudio, exécutez la commande suivante :
+
+```r
+install.packages(c("data.table", "bigmemory"))
+if (!requireNamespace("rMVP", quietly = TRUE)) {
+    install.packages("rMVP", repos = "http://cran.us.r-project.org")
+}
+```
+
+---
+
+## **3. Chargement des Bibliothèques**
 
 ```r
 library(data.table)
@@ -18,13 +60,11 @@ library(rMVP)
 library(bigmemory)
 ```
 
-- **`data.table`** : Utilisée pour charger rapidement de grands fichiers texte comme les fichiers Hapmap.  
-- **`rMVP`** : Bibliothèque dédiée pour les analyses GWAS avec des méthodes avancées comme **MLM (Mixed Linear Model)**.  
-- **`bigmemory`** : Facilite la manipulation de matrices volumineuses, essentielles pour les analyses de génotype.
+- **Objectif** : Charger les bibliothèques pour manipuler les données et exécuter les analyses GWAS.
 
 ---
 
-### **2.2 Chargement et Préparation du Fichier Hapmap**
+## **4. Chargement et Préparation du Fichier Hapmap**
 
 ```r
 setwd("./")  # Définit le répertoire de travail actuel
@@ -32,14 +72,13 @@ hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
 ```
 
 - **Explication** :  
-   Le fichier **`African_SNPs.hmp.txt`** est chargé. Ce fichier Hapmap contient :  
-   - **Colonnes 1 à 11** : Métadonnées sur les SNPs (ID, position chromosomique, etc.).  
+   - **`African_SNPs.hmp.txt`** : Fichier contenant les génotypes des SNPs.  
+   - **Colonnes 1 à 11** : Informations des SNPs (chromosome, position, etc.).  
    - **Colonnes suivantes** : Génotype des individus.  
-- **Objectif** : Préparer les données pour l'analyse GWAS.
 
 ---
 
-### **2.3 Sélection d'un Sous-Ensemble de 100 Échantillons**
+## **5. Sélection d'un Sous-Ensemble de 100 Échantillons**
 
 ```r
 set.seed(42)
@@ -50,38 +89,35 @@ test <- hmp_data[, ..selected_columns]
 write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 ```
 
-- **Explication** :  
-   - **`set.seed(42)`** garantit la reproductibilité des résultats.  
-   - 100 individus sont sélectionnés aléatoirement pour créer un sous-ensemble de test, ce qui accélère les analyses initiales.  
-- **Objectif** : Permet de tester rapidement le workflow GWAS avant d'utiliser l'ensemble des données.
+- **Objectif** : Créer un sous-ensemble réduit de 100 échantillons pour des tests rapides.
 
 ---
 
-### **2.4 Conversion des Données pour MVP**
+## **6. Conversion des Données pour rMVP**
 
-#### **Données de test**
+### **6.1 Données de Test**
 
 ```r
 MVP.Data(fileHMP = "test_file.hmp.txt", filePhe = "Phenotype_African.txt", sep.phe = "\t", out = "mvp.hmp.test")
 ```
 
-#### **Données complètes**
+### **6.2 Données Complètes**
 
 ```r
 MVP.Data(fileHMP = "African_SNPs.hmp.txt", filePhe = "Phenotype_African.txt", sep.phe = "\t", out = "mvp.hmp")
 ```
 
-- **Explication** :  
-   - **`fileHMP`** : Fichier de génotype au format Hapmap.  
-   - **`filePhe`** : Fichier contenant les phénotypes (données associées aux individus).  
-   - **`out`** : Préfixe des fichiers de sortie (génotype, phénotype, carte génétique).  
-- **Objectif** : Transformer les données brutes pour les rendre compatibles avec **`rMVP`**.
+- **Explication** : Convertit les fichiers Hapmap pour les rendre compatibles avec rMVP.  
+- **Sortie** :  
+   - Matrice de génotype.  
+   - Données de phénotype.  
+   - Carte génétique.
 
 ---
 
-### **2.5 Chargement des Données Transformées**
+## **7. Chargement des Données Transformées**
 
-#### **Données de test**
+### **Données de Test**
 
 ```r
 genotype_test <- attach.big.matrix("mvp.hmp.test.geno.desc")
@@ -89,7 +125,7 @@ phenotype_test <- read.table("mvp.hmp.test.phe", header = TRUE)
 map_test <- read.table("mvp.hmp.test.geno.map", header = TRUE)
 ```
 
-#### **Données complètes**
+### **Données Complètes**
 
 ```r
 genotype <- attach.big.matrix("mvp.hmp.geno.desc")
@@ -97,15 +133,9 @@ phenotype <- read.table("mvp.hmp.phe", header = TRUE)
 map <- read.table("mvp.hmp.geno.map", header = TRUE)
 ```
 
-- **Explication** :  
-   - **`genotype`** : Matrice de génotype stockée en mémoire pour une manipulation rapide.  
-   - **`phenotype`** : Données de phénotype pour chaque individu (valeurs mesurées).  
-   - **`map`** : Carte génétique indiquant la position des SNPs sur les chromosomes.  
-- **Objectif** : Préparer les données pour l'analyse GWAS.
-
 ---
 
-### **2.6 Analyse en Composantes Principales (ACP)**
+## **8. Analyse en Composantes Principales (ACP)**
 
 ```r
 genotype_matrix <- as.matrix(genotype)
@@ -114,15 +144,12 @@ eigenvalues <- pca_results$sdev^2
 plot(eigenvalues, type = "b", pch = 19, xlab = "Composante principale", ylab = "Valeur propre", main = "Scree Plot", xlim = c(1, 30))
 ```
 
-- **Objectif** : Identifier le **nombre optimal de composantes principales** pour corriger la structure de la population.  
-- **Interprétation du Scree Plot** :  
-   - **X** : Composantes principales (PC).  
-   - **Y** : Valeurs propres (**eigenvalues**).  
-   - Le **"coude"** du graphique indique le nombre minimal de PC à inclure (ici, 5 composantes sont choisies).  
+- **Objectif** : Déterminer le nombre de composantes principales pour corriger la structure de population.  
+- **Interprétation** : Les **5 premières composantes** expliquent le plus de variance.
 
 ---
 
-### **2.7 Analyse GWAS avec le Modèle MLM**
+## **9. Analyse GWAS avec le Modèle MLM**
 
 ```r
 for(i in 2:ncol(phenotype_test)) {
@@ -139,60 +166,34 @@ for(i in 2:ncol(phenotype_test)) {
 }
 ```
 
-- **Paramètres** :  
-   - **`phe`** : Données de phénotype (une colonne à la fois).  
-   - **`geno`** : Matrice de génotype.  
-   - **`map`** : Carte génétique.  
-   - **`nPC.MLM = 5`** : Nombre de composantes principales (ACP).  
-   - **`method = "MLM"`** : Utilise le modèle mixte linéaire pour corriger la structure de la population.  
+- **Objectif** : Réaliser une analyse GWAS pour chaque phénotype en utilisant le modèle MLM.  
+- **Paramètres Clés** :  
+   - **`nPC.MLM = 5`** : Correction de structure basée sur 5 PC.  
    - **`threshold = 0.05`** : Seuil de significativité pour les SNPs.
 
 ---
 
-## **3. Interprétation des Figures et Résultats**
+## **10. Interprétation des Figures et Résultats**
 
-### **3.1 Scree Plot (ACP)**
+### **10.1 Scree Plot (ACP)**  
+- **Objectif** : Identifier le nombre optimal de PC.  
+- **Interprétation** : Le **coude** indique le nombre de PC (5 ici).  
 
-- **Objectif** : Déterminer le nombre de PC pour corriger la population.  
-- **Interprétation** : Le coude de la courbe indique **5 PC** comme optimal.
+### **10.2 Manhattan Plot**  
+- **Axe X** : Position des SNPs.  
+- **Axe Y** : -log10(p-value).  
+- **Interprétation** : Les **pics** indiquent des SNPs significatifs.  
 
----
+### **10.3 Diagrammes Circulaires**  
+- Visualisent la distribution des SNPs sur les chromosomes.  
+- **Interprétation** : Les SNPs significatifs se trouvent éloignés du centre.
 
-### **3.2 Manhattan Plot**
-
-- **Description** : Graphique des p-values des SNPs.  
-   - **Axe X** : Position des SNPs sur les chromosomes.  
-   - **Axe Y** : -log10(p-value).  
-- **Interprétation** :  
-   - Les **pics dépassant la ligne seuil** représentent des SNPs associés significativement au phénotype.  
-   - La localisation des pics permet d'identifier des régions génomiques d'intérêt.
-
----
-
-### **3.3 Diagrammes Circulaires**
-
-- **Objectif** : Montrer la distribution des SNPs significatifs sur les chromosomes.  
-- **Interprétation** :  
-   - Les SNPs significatifs apparaissent éloignés du centre.  
-   - Une **concentration de SNPs** dans une région spécifique indique un locus candidat.
+### **10.4 Fichier des SNPs Significatifs**  
+- **`pmap.signal`** : Liste des SNPs significatifs avec ID, position et p-value.  
+- **Interprétation** : Ces SNPs peuvent être explorés pour identifier des gènes candidats.
 
 ---
 
-### **3.4 Fichier des SNPs Significatifs**
+## **11. Conclusion**
 
-- **Fichier `pmap.signal`** : Contient les SNPs significatifs avec :  
-   - **ID du SNP**.  
-   - **Position génomique**.  
-   - **p-value**.  
-- **Interprétation** : Ces SNPs peuvent être analysés dans des bases de données pour identifier des gènes associés.
-
----
-
-## **4. Conclusion**
-
-Ce script réalise une **analyse complète GWAS**. Les figures et fichiers générés permettent d'identifier des **SNPs candidats** associés à un phénotype.  
-- **Scree Plot** : Nombre de PC pour corriger la population.  
-- **Manhattan Plot et diagrammes circulaires** : Visualisation des SNPs significatifs.  
-- **Fichier signal** : Liste des SNPs à analyser plus en détail.  
-
-**Utilisez ces résultats pour explorer les loci et gènes potentiellement impliqués.**
+Ce script, exécuté sous **RStudio**, offre un workflow complet pour l'analyse GWAS. Les résultats obtenus permettent d'identifier des **SNPs significatifs** et des **régions génomiques** d'intérêt pour des études ultérieures.
