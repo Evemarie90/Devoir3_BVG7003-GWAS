@@ -21,22 +21,26 @@ Ce guide détaille les étapes nécessaires pour effectuer une analyse GWAS à l
 2. Installez les packages nécessaires dans R :
    ```r
    install.packages(c("rMVP","ggplot2", "data.table" "bigmemory", "dplyr", "readxl"))
+   ```
+3. Cloner ce git sur votre ordinateur
+4. Ouvrir le script du répertoire Script/ dans RStudio pour réaliser l'analyse des données contenues dans le répertoire Data/ et suivre les instructions qui s'y trouvent
 
 ## Prétraitement des données
 
-1. Charger les fichiers de génotype et de phénotype.
-2. Filtrer les SNPs avec une fréquence allélique mineure (MAF) inférieure à 0,05 :
-  Ceci peut être réalisé avec le logiciel Tassel 5.0 en utilisant un seuil de 0,05. Les SNPs avec des fréquences alléliques égales ou inférieures à 0,05 devraient être filtrées.
+1. Filtrer les SNPs avec une fréquence allélique mineure (MAF) inférieure à 0,05 :
+  Ceci peut être réalisé avec le logiciel Tassel 5.0 en utilisant un seuil de 0,05. Les SNPs avec des fréquences alléliques égales ou inférieures à 0,05 devraient être filtrées. Noter que les données partagées dans ce github sont déjà filtrées.
 
-4. Réaliser une analyse en composantes principales (ACP), qui permet de déterminer le nombre de composantes qui résument le mieux nos données de génotype. L'analyse inclue la génération d'un scree plot qui permet de décider du nombre de paramètres à inclure à l'argument nPC.MLM de la fonction MVP(). Un exemple de ce graphique peut être visualisé dans le répertoire Résultats/ du présent git.
+2.  Charger les fichiers de génotype et de phénotype.
+
+3. Réaliser une analyse en composantes principales (ACP) en exécutant les commandes du Script_R_GWAS. Cela permet de déterminer le nombre de composantes qui résument le mieux nos données de génotype. L'analyse inclue la génération d'un scree plot qui permet de décider du nombre de paramètres à inclure à l'argument nPC.MLM de la fonction MVP(). Un exemple de ce graphique peut être visualisé dans le répertoire Résultats/ du présent git.
 
 ## Exécution de l'analyse GWAS
 
-Le script et ses commentaires présents dans le répertoire Script/ devraient vous guider au travers des étapes de l'analyse GWAS des données génomiques et phénotypiques contenues dans le répertoire Data/.
+Le script Script_R_GWAS et ses commentaires présents dans le répertoire Script/ devraient pouvoir vous guider au travers des étapes de l'analyse GWAS des données génomiques et phénotypiques contenues dans le répertoire Data/.
 
 Pour réaliser l'analyse, il faut initialiser le répertoire de travail dans le dossier où se trouvent les données génotypiques et phénotypiques à utiliser pour le GWAS. 
 L'exécution comprend la manipulation des données afin de produire des données test. Ces données peuvent aussi être retrouvées dans le dossier Data/ du présent Git.
-Pour réaliser l'analyse avec les données d'origine / avec les données test, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse (données test vs données d'origine).
+Pour réaliser l'analyse avec les données d'origine / données test, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse (données test vs données d'origine).
 
 ## Résultats attendus
 
