@@ -183,7 +183,8 @@ for(i in 2:ncol(phenotype_test)) {
 ### **10.2 Manhattan Plot**  
 - **Axe X** : Position des SNPs.  
 - **Axe Y** : -log10(p-value).  
-- **Interprétation** : Les **pics** indiquent des SNPs significatifs.  
+- **Interprétation** : Les pics dépassant la ligne seuil représentent des SNPs associés significativement au phénotype.
+La localisation des pics permet d'identifier des régions génomiques d'intérêt.  
 
 ### **10.3 Diagrammes Circulaires**  
 - Visualisent la distribution des SNPs sur les chromosomes.  
