@@ -1,3 +1,5 @@
+---
+
 ## **README - Analyse GWAS avec R et rMVP**
 
 ---
@@ -7,21 +9,23 @@
 1. [Introduction](#1-introduction)  
 2. [Logiciel Requis](#2-logiciel-requis)  
 3. [Chargement des Bibliothèques](#3-chargement-des-bibliothèques)  
-4. [Chargement et Préparation du Fichier Hapmap](#4-chargement-et-préparation-du-fichier-hapmap)  
-5. [Sélection d'un Sous-Ensemble de 100 Échantillons](#5-sélection-dun-sous-ensemble-de-100-échantillons)  
-6. [Conversion des Données pour rMVP](#6-conversion-des-données-pour-rmvp)  
-   - 6.1 Données de Test  
-   - 6.2 Données Complètes  
-7. [Chargement des Données Transformées](#7-chargement-des-données-transformées)  
-8. [Analyse en Composantes Principales (ACP)](#8-analyse-en-composantes-principales-acp)  
-9. [Analyse GWAS avec le Modèle MLM](#9-analyse-gwas-avec-le-modèle-mlm)  
-10. [Interprétation des Figures et Résultats](#10-interprétation-des-figures-et-résultats)  
-    - 10.1 Scree Plot (ACP)  
-    - 10.2 Manhattan Plot  
-    - 10.3 Diagrammes Circulaires  
-    - 10.4 Fichier des SNPs Significatifs  
-11. [Dépannage](#11-dépannage)
-12. [Conclusion](#11-conclusion)
+4. [Définition du Répertoire de Travail](#4-définition-du-répertoire-de-travail)  
+5. [Chargement et Préparation du Fichier Hapmap](#5-chargement-et-préparation-du-fichier-hapmap)  
+6. [Sélection d'un Sous-Ensemble de 100 Échantillons](#6-sélection-dun-sous-ensemble-de-100-échantillons)  
+7. [Conversion des Données pour rMVP](#7-conversion-des-données-pour-rmvp)  
+   - 7.1 Données de Test  
+   - 7.2 Données Complètes  
+8. [Chargement des Données Transformées](#8-chargement-des-données-transformées)  
+9. [Analyse en Composantes Principales (ACP)](#9-analyse-en-composantes-principales-acp)  
+10. [Filtrage des SNPs avec une Fréquence Allélique Mineure (MAF)](#10-filtrage-des-snps-avec-une-fréquence-allélique-mineure-maf)  
+11. [Analyse GWAS avec le Modèle MLM](#11-analyse-gwas-avec-le-modèle-mlm)  
+12. [Interprétation des Figures et Résultats](#12-interprétation-des-figures-et-résultats)  
+   - 12.1 Scree Plot (ACP)  
+   - 12.2 Manhattan Plot  
+   - 12.3 Diagrammes Circulaires  
+   - 12.4 QQ Plot  
+   - 12.5 Densité des SNPs  
+13. [Conclusion](#13-conclusion)
 
 ---
 
@@ -71,21 +75,34 @@ library(bigmemory)
 
 ---
 
-## **4. Chargement et Préparation du Fichier Hapmap**
+## **4. Définition du Répertoire de Travail**
 
 ```r
-setwd("./")  # Définit le répertoire de travail actuel
+setwd("./")  # Définit le répertoire de travail sur le dossier actuel (par exemple, après avoir cloné le dépôt Git)
+```
+
+- **Explication** :  
+   Cette ligne de code définit le répertoire de travail pour le script R. Le **répertoire de travail** est l'endroit où R va chercher les fichiers d'entrée et où il enregistrera les fichiers de sortie.
+   - **`setwd("./")`** : Cette commande définit le répertoire de travail comme étant le **dossier actuel**, c'est-à-dire le dossier où se trouve le script R.  
+   - Cela est particulièrement utile lorsque vous avez cloné un dépôt Git contenant le script et les fichiers de données. Il est important de vous assurer que le répertoire de travail est bien défini avant de charger des fichiers ou de générer des résultats.  
+   - Cette ligne garantit que le script fonctionne correctement sans avoir à spécifier de chemins absolus pour les fichiers.
+
+---
+
+## **5. Chargement et Préparation du Fichier Hapmap**
+
+```r
 hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
 ```
 
 - **Explication** :  
-   - **`African_SNPs.hmp.txt`** : Fichier contenant les information relatives aux SNPs.  
+   - **`African_SNPs.hmp.txt`** : Fichier contenant les informations relatives aux SNPs.  
    - **Colonnes 1 à 11** : Informations des SNPs (chromosome, position, etc.).  
    - **Colonnes suivantes** : Génotype des individus.  
 
 ---
 
-## **5. Sélection d'un Sous-Ensemble de 100 Échantillons**
+## **6. Sélection d'un Sous-Ensemble de 100 Échantillons**
 
 ```r
 set.seed(42)
@@ -100,15 +117,15 @@ write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quo
 
 ---
 
-## **6. Conversion des Données pour rMVP**
+## **7. Conversion des Données pour rMVP**
 
-### **6.1 Données de Test**
+### **7.1 Données de Test**
 
 ```r
 MVP.Data(fileHMP = "test_file.hmp.txt", filePhe = "Phenotype_African.txt", sep.phe = "\t", out = "mvp.hmp.test")
 ```
 
-### **6.2 Données Complètes**
+### **7.2 Données Complètes**
 
 ```r
 MVP.Data(fileHMP = "African_SNPs.hmp.txt", filePhe = "Phenotype_African.txt", sep.phe = "\t", out = "mvp.hmp")
@@ -122,7 +139,7 @@ MVP.Data(fileHMP = "African_SNPs.hmp.txt", filePhe = "Phenotype_African.txt", se
 
 ---
 
-## **7. Chargement des Données Transformées**
+## **8. Chargement des Données Transformées**
 
 ### **Chargement des Données de Test**
 
@@ -142,7 +159,7 @@ map <- read.table("mvp.hmp.geno.map", header = TRUE)
 
 ---
 
-## **8. Analyse en Composantes Principales (ACP)**
+## **9. Analyse en Composantes Principales (ACP)**
 
 ```r
 genotype_matrix <- as.matrix(genotype)
@@ -156,7 +173,17 @@ plot(eigenvalues, type = "b", pch = 19, xlab = "Composante principale", ylab = "
 
 ---
 
-## **9. Analyse GWAS avec le Modèle MLM**
+## **10. Filtrage des SNPs avec une Fréquence Allélique Mineure (MAF)**
+
+Avant d'effectuer l'analyse GWAS, il est important de filtrer les SNPs selon leur fréquence allélique mineure (MAF). Cela permet de supprimer les SNPs rares, qui peuvent être difficiles à interpréter et peuvent introduire du bruit dans les analyses.
+
+Filtrage des SNPs avec MAF < 0.05
+Ce filtrage peut être effectué avec le logiciel Tassel 5.0 en appliquant un seuil de 0,05 pour la fréquence allélique mineure. Cela signifie que tous les SNPs dont la MAF est inférieure ou égale à 0,05 seront exclus de l'analyse.
+
+Note importante : Les données partagées dans ce dépôt GitHub sont déjà filtrées pour inclure uniquement les SNPs avec une MAF supérieure à 0,05.
+
+
+## **11. Analyse GWAS avec le Modèle MLM**
 
 ```r
 for(i in 2:ncol(phenotype_test)) {
@@ -181,13 +208,13 @@ for(i in 2:ncol(phenotype_test)) {
 
 ---
 
-### **10. Interprétation des Figures et Résultats**
+### **12. Interprétation des Figures et Résultats**
 
 L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** (polymorphismes nucléotidiques simples) et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
 
 ---
 
-### **10.1 Scree Plot (Analyse en Composantes Principales - ACP)**
+### **12.1 Scree Plot (Analyse en Composantes Principales - ACP)**
 
 #### **Objectif :**
 Le Scree Plot est un graphique essentiel pour évaluer l'importance des différentes composantes principales (PC) dans une analyse en composantes principales (ACP). L'objectif principal de l'ACP est de réduire la dimensionnalité des données tout en conservant un maximum de variance.
@@ -205,7 +232,7 @@ Dans notre exemple :
 
 ---
 
-### **10.2 Manhattan Plot**
+## **12.2 Manhattan Plot**
 
 #### **Objectif :**
 Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'une analyse GWAS. Elle permet d'identifier les **SNPs associés** au trait d'intérêt en affichant les p-values des tests statistiques.
@@ -228,7 +255,7 @@ Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'
 
 ---
 
-### **10.3 Diagrammes Circulaires**
+### **12.3 Diagrammes Circulaires**
 
 #### **Objectif :**
 Les **diagrammes circulaires** sont utilisés pour visualiser de manière compacte et esthétique la **répartition des SNPs** significatifs sur le génome, tout en maintenant une structure chromosomique ordonnée. C’est une variante du **Manhattan Plot** classique, mais avec un agencement circulaire.
@@ -251,7 +278,7 @@ Les **diagrammes circulaires** sont utilisés pour visualiser de manière compac
 
 ---
 
-### **10.4 Graphiques QQplot**
+### **12.4 Graphiques QQplot**
 Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\) obtenues à partir des statistiques MLM (Mixed Linear Model) comparée à la distribution théorique attendue sous l'hypothèse nulle.
 
 ### Axes :
@@ -279,7 +306,7 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 
 ---
 
-### **10.5 Figure de densité des SNPs**
+### **12.5 Figure de densité des SNPs**
 
 ## Objectif  
 Cette figure présente la **densité des SNPs** sur les chromosomes, analysée dans des fenêtres de **1 Mb**.
@@ -318,6 +345,6 @@ Les régions de **forte densité** de SNPs constituent des candidats potentiels 
 ---
 
 
-## **11. Conclusion**
+## **13. Conclusion**
 
-Ce script, exécuté sous **RStudio**, offre un workflow complet pour l'analyse GWAS. Les résultats obtenus permettent d'identifier des **SNPs significatifs** et des **régions génomiques** d'intérêt pour des études ultérieures.
+Ce script, exécuté sous RStudio, offre un workflow complet pour l'analyse GWAS. Les résultats obtenus permettent d'identifier des **SNP
