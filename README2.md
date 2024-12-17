@@ -355,7 +355,6 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 - **Points bleus** : Valeurs observées de \(-\log_{10}(p)\).
 - **Bande bleue** : Intervalle de confiance autour de la distribution théorique.
 
----
 
 ## Interprétation du graphique
 1. **Position des points bleus** :
@@ -376,13 +375,11 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 ## Objectif  
 Cette figure présente la **densité des SNPs** sur les chromosomes, analysée dans des fenêtres de **1 Mb**.
 
----
 
 ## Description des Axes  
 - **Axe vertical** : Chromosomes (Chr1 à Chr20).  
 - **Axe horizontal** : Positions génomiques le long des chromosomes (en mégabases, Mb).  
 
----
 
 ## Échelle des Couleurs  
 La densité des SNPs est représentée par une échelle de couleurs :  
