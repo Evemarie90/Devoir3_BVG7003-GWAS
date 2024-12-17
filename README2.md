@@ -239,7 +239,7 @@ Les **diagrammes circulaires** sont utilisés pour visualiser de manière compac
   
   - **Positions des SNPs** : Sur chaque chromosome, les SNPs sont représentés le long de l'arc du cercle, suivant leur position sur le chromosome. Les SNPs sont espacés de manière uniforme le long de chaque secteur.
   
-- **Position des SNPs sur l'axe Y** : Les **points** sur l'axe vertical du diagramme indiquent la valeur de **-log10(p-value)** de chaque SNP. Comme dans le Manhattan Plot traditionnel, plus un point est élevé, plus l’association du SNP avec le trait est significative.
+- **Position des SNPs sur l'axe Y** : Les **points** sur l'axe vertical du diagramme indiquent la valeur de **-log10(p-value)** de chaque SNP. Comme dans le Manhattan Plot traditionnel, plus un point est élevé (près du centre), plus l’association du SNP avec le trait est significative.
 
 #### **Interprétation :**
 - Les **SNPs significatifs** apparaissent comme des **points se rapprochant du centre du cercle**. Plus un SNP est significatif, plus il sera situé au centre du cercle.
@@ -279,22 +279,45 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 
 ---
 
-## **11. Dépannage ##
-Advenant que le téléchargement du fichier hmp entraine la modification de l'alignement des colonnes de ce dernier vous pouvez convertir votre fichier hmp en fichier excel (copier-coller les données). Ensuite, vous pouvez utiliser le script ci-dessous pour re-convertir vos données en hmp :
+### **10.5 Figure de densité des SNPs**
 
-#### Lire le fichier excel dans R ####
-```r
-library(readxl)
+## Objectif  
+Cette figure présente la **densité des SNPs** sur les chromosomes, analysée dans des fenêtres de **1 Mb**.
 
-excel_data <- read_excel("excel_dataset.xlsx")
-```
+---
 
-#### Écrire les données dans un fichier hmp ####
-```r
-Rstudio write.table(excel_data, file = "output_file.hmp.txt", 
-            sep = "\t", row.names = FALSE, quote = FALSE)
-```
+## Description des Axes  
+- **Axe vertical** : Chromosomes (Chr1 à Chr20).  
+- **Axe horizontal** : Positions génomiques le long des chromosomes (en mégabases, Mb).  
 
-## **12. Conclusion**
+---
+
+## Échelle des Couleurs  
+La densité des SNPs est représentée par une échelle de couleurs :  
+- **Vert foncé à clair** : Faible densité de SNPs (1 à 100 SNPs).  
+- **Jaune à orange** : Densité modérée (100 à 232 SNPs).  
+- **Rouge** : Haute densité de SNPs (265 à >298 SNPs).  
+
+---
+
+## Interprétation  
+- Les **SNPs** sont répartis de manière **hétérogène** sur les chromosomes.  
+- Certaines régions présentent une **densité élevée** de SNPs (zones rouges), notamment sur les chromosomes :  
+  - **Chr7**, **Chr13**, **Chr16** et **Chr18**.  
+- À l'inverse, des régions apparaissent avec une faible densité de SNPs (zones vert foncé).  
+
+---
+
+## Conclusion  
+Cette répartition inégale des SNPs pourrait refléter des particularités génomiques telles que :  
+- **Régions de sélection** ou soumises à une pression évolutive.  
+- **Variabilité génétique accrue** dans certaines zones.  
+
+Les régions de **forte densité** de SNPs constituent des candidats potentiels pour des études approfondies sur la variabilité génétique et la biologie sous-jacente.  
+
+---
+
+
+## **11. Conclusion**
 
 Ce script, exécuté sous **RStudio**, offre un workflow complet pour l'analyse GWAS. Les résultats obtenus permettent d'identifier des **SNPs significatifs** et des **régions génomiques** d'intérêt pour des études ultérieures.
