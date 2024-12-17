@@ -82,7 +82,7 @@ setwd("./")  # Définit le répertoire de travail sur le dossier actuel (par exe
 ```
 
 - **Explication** :  
-   Cette ligne de code définit le répertoire de travail pour le script R. Le **répertoire de travail** est l'endroit où R va chercher les fichiers d'entrée et où il enregistrera les fichiers de sortie.
+   Cette ligne de code définit le répertoire de travail pour le script R. 
    - **`setwd("./")`** : Cette commande définit le répertoire de travail comme étant le **dossier actuel**, c'est-à-dire le dossier où se trouve le script R.  
    - Cela est particulièrement utile lorsque vous avez cloné un dépôt Git contenant le script et les fichiers de données. Il est important de vous assurer que le répertoire de travail est bien défini avant de charger des fichiers ou de générer des résultats.  
    - Cette ligne garantit que le script fonctionne correctement sans avoir à spécifier de chemins absolus pour les fichiers.
