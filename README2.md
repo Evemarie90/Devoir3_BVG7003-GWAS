@@ -207,30 +207,73 @@ Ce filtrage peut être effectué avec le logiciel Tassel 5.0 en appliquant un se
 Note importante : Les données partagées dans ce dépôt GitHub sont déjà filtrées pour inclure uniquement les SNPs avec une MAF supérieure à 0,05.
 
 
-## **11. Analyse GWAS avec le Modèle MLM**
-
-```r
-for(i in 2:ncol(phenotype_test)) {
-  imMVP <- MVP(phe = phenotype_test[, c(1, i)],
-               geno = genotype_test,
-               map = map_test,
-               nPC.MLM = 5,
-               maxLine = 10000,
-               vc.method = "BRENT",
-               threshold = 0.05,
-               method = "MLM",
-               file.output = c("pmap", "pmap.signal", "plot", "log"))
-  gc()
-}
-```
-
-- **Objectif** : Réaliser une analyse GWAS pour chaque phénotype en utilisant le modèle MLM.  
-- **Paramètres Clés** :  
-   - **`nPC.MLM = 5`** : Correction de structure basée sur 5 PC.  
-   - **`threshold = 0.05`** : Seuil de significativité pour les SNPs.
-- **IMPORTANT: Pour obtenir les analyses avec les données complètes** : Remplacez les termes "phenotype_test" et "genotype_test" par "phenotype" et "genotype"
+Voici une version détaillée de l'étape "Analyse GWAS avec le Modèle MLM" en format README :
 
 ---
+
+## 11. Analyse GWAS avec le Modèle MLM
+
+L'objectif de cette étape est de réaliser une analyse GWAS pour chaque phénotype en utilisant le modèle MLM (Modèle Linéaire Mixte), qui permet de prendre en compte la structure de population et d'effectuer des corrections via des composantes principales (PC). Ce modèle est particulièrement utile pour identifier les associations entre les SNPs et les traits phénotypiques dans un jeu de données.
+
+### Étapes de l'analyse
+
+ **Boucle pour chaque phénotype** :
+   La boucle `for(i in 2:ncol(phenotype_test))` permet d'effectuer l'analyse pour chaque colonne de données phénotypiques. On commence à partir de la colonne 2 pour éviter d'inclure la première colonne qui est généralement utilisée pour les identifiants d'échantillons (ou autres informations non phénotypiques).
+
+   ```r
+   for(i in 2:ncol(phenotype_test)) {
+   ```
+
+ **Appel de la fonction `MVP`** :
+   À chaque itération de la boucle, la fonction `MVP` est utilisée pour effectuer l'analyse GWAS en utilisant un modèle MLM. Voici les différents paramètres utilisés dans cette fonction :
+
+   - **`phe = phenotype_test[, c(1, i)]`** : Ce paramètre définit le phénotype à analyser. Il prend la première colonne du fichier (généralement les identifiants des individus) et la colonne i (le phénotype en cours d'analyse).
+   - **`geno = genotype_test`** : Ce paramètre définit les données génétiques pour l'analyse. C'est la matrice des génotypes (génome) à utiliser pour identifier les associations avec le phénotype.
+   - **`map = map_test`** : Ce paramètre contient la carte des positions des SNPs, nécessaire pour l'analyse afin de connaître la position des SNPs dans le génome.
+   - **`nPC.MLM = 5`** : Ce paramètre indique le nombre de composantes principales (PC) à utiliser pour corriger la structure de population dans l'analyse. Ici, 5 PC sont utilisées.
+   - **`maxLine = 10000`** : Ce paramètre définit le nombre maximal de lignes à traiter dans l'analyse. Il est utilisé pour optimiser la vitesse du traitement.
+   - **`vc.method = "BRENT"`** : Cette option définit la méthode d'estimation de la variance. La méthode "BRENT" est utilisée ici pour maximiser l'efficacité du calcul.
+   - **`threshold = 0.05`** : Ce paramètre définit le seuil de significativité pour les SNPs. Un SNP sera considéré comme significatif si sa valeur p est inférieure à 0.05.
+   - **`method = "MLM"`** : Ce paramètre spécifie que le modèle utilisé pour l'analyse est un modèle linéaire mixte (MLM).
+   - **`file.output = c("pmap", "pmap.signal", "plot", "log")`** : Ces options définissent les types de fichiers de sortie que l'analyse générera, notamment une carte des associations (`pmap`), les signaux significatifs (`pmap.signal`), des graphiques (`plot`) et un fichier log (`log`) pour enregistrer les détails de l'exécution.
+
+   ```r
+   imMVP <- MVP(phe = phenotype_test[, c(1, i)],
+                geno = genotype_test,
+                map = map_test,
+                nPC.MLM = 5,
+                maxLine = 10000,
+                vc.method = "BRENT",
+                threshold = 0.05,
+                method = "MLM",
+                file.output = c("pmap", "pmap.signal", "plot", "log"))
+   ```
+
+ **Libération de la mémoire** :
+   Après chaque analyse, la fonction `gc()` est appelée pour effectuer un nettoyage de la mémoire et libérer les ressources, ce qui permet d'éviter une surcharge mémoire lorsque vous travaillez avec de grands jeux de données.
+
+   ```r
+   gc()
+   ```
+**Analyse des Données Complètes** :
+   Si vous souhaitez utiliser les données complètes pour l'analyse (plutôt que les données de test), il vous suffit de remplacer les objets `phenotype_test` et `genotype_test` par `phenotype` et `genotype` dans le code. Cela permet d'analyser l'ensemble complet des données plutôt que seulement l'échantillon de test.
+
+   - Remplacez :
+     ```r
+     phenotype_test
+     genotype_test
+     map_test
+     ```
+     par :
+     ```r
+     phenotype
+     genotype
+     map
+     ```
+
+---
+
+Cela fournit une explication détaillée étape par étape de l'analyse GWAS en utilisant le modèle MLM, en précisant les paramètres clés et leur fonction dans le cadre de l'analyse.
 
 ### **12. Interprétation des Figures et Résultats**
 
