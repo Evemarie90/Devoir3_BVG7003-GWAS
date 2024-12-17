@@ -57,7 +57,7 @@ if (!requireNamespace("rMVP", quietly = TRUE)) {
 
 ## **2.1 Fichiers d'entrée requis**
 
-Les fichiers suivants sont présents dans la section Data de ce Github:
+Les fichiers suivants sont présents dans la section Data de ce Github et doivent être installés:
 - **Fichier Génotype** : African_SNPs.hmp.txt
 - **Fichier Phénotype** : Phenotype_African.txt
 
@@ -83,9 +83,9 @@ setwd("./")  # Définit le répertoire de travail sur le dossier actuel (par exe
 
 - **Explication** :  
    Cette ligne de code définit le répertoire de travail pour le script R. 
-   - **`setwd("./")`** : Cette commande définit le répertoire de travail comme étant le **dossier actuel**, c'est-à-dire le dossier où se trouve le script R.  
-   - Cela est particulièrement utile lorsque vous avez cloné un dépôt Git contenant le script et les fichiers de données. Il est important de vous assurer que le répertoire de travail est bien défini avant de charger des fichiers ou de générer des résultats.  
+   - **`setwd("./")`** : Cette commande définit le répertoire de travail comme étant le **dossier actuel**, c'est-à-dire le dossier où se trouve le script R.    
    - Cette ligne garantit que le script fonctionne correctement sans avoir à spécifier de chemins absolus pour les fichiers.
+   - Si vous n'arrivez pas à définir le répertoire de travail, copiez le chemin d'accès de votre ordinateur où vous avez enregistrés les fichiers de l'étape 2.1 dans les "". Par exemple: setwd("C:/Users/Felix/OneDrive/Bureau/CoursDavoudA24"). Prenez bien soin d'ajuster l'orientation des /. 
 
 ---
 
@@ -137,7 +137,6 @@ MVP.Data(fileHMP = "African_SNPs.hmp.txt", filePhe = "Phenotype_African.txt", se
    - Données de phénotype.  
    - Carte génétique.
 
-Voici la version sans sous-sections pour le README :
 
 ---
 
@@ -364,7 +363,7 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 
 2. **Signification** :
    - Les valeurs observées de \(-\log_{10}(p)\) sont **inférieures** aux valeurs attendues.
-   - Cela signifie que les p-valeurs observées sont plus **grandes** que prévu sous l'hypothèse nulle.
+   - Cela signifie que les p-values observées sont plus **grandes** que prévu sous l'hypothèse nulle.
 
 3. **Conclusion** :
    - Il n'y a **pas de signal fort** dans les données analysées. Les résultats suggèrent que les associations testées ne sont pas significatives.
@@ -389,22 +388,11 @@ Cette figure présente la **densité des SNPs** sur les chromosomes, analysée d
 La densité des SNPs est représentée par une échelle de couleurs :  
 - **Vert foncé à clair** : Faible densité de SNPs (1 à 100 SNPs).  
 - **Jaune à orange** : Densité modérée (100 à 232 SNPs).  
-- **Rouge** : Haute densité de SNPs (265 à >298 SNPs).  
+- **Rouge** : Haute densité de SNPs (265 à >298 SNPs).   
 
 ---
 
-## Interprétation  
-- Les **SNPs** sont répartis de manière **hétérogène** sur les chromosomes.  
-- Certaines régions présentent une **densité élevée** de SNPs (zones rouges), notamment sur les chromosomes :  
-  - **Chr7**, **Chr13**, **Chr16** et **Chr18**.  
-- À l'inverse, des régions apparaissent avec une faible densité de SNPs (zones vert foncé).  
-
----
-
-## Conclusion  
-Cette répartition inégale des SNPs pourrait refléter des particularités génomiques telles que :  
-- **Régions de sélection** ou soumises à une pression évolutive.  
-- **Variabilité génétique accrue** dans certaines zones.  
+## Conclusion   
 
 Les régions de **forte densité** de SNPs constituent des candidats potentiels pour des études approfondies sur la variabilité génétique et la biologie sous-jacente.  
 
@@ -413,4 +401,4 @@ Les régions de **forte densité** de SNPs constituent des candidats potentiels 
 
 ## **13. Conclusion**
 
-Ce script, exécuté sous RStudio, offre un workflow complet pour l'analyse GWAS. Les résultats obtenus permettent d'identifier des **SNP
+Ce script offre un workflow complet pour l'analyse GWAS sous RStudio, permettant d'identifier des SNPs significatifs associés aux traits d'intérêt et de générer des visualisations utiles pour l'interprétation des résultats.
