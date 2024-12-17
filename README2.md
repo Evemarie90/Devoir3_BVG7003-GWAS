@@ -137,25 +137,49 @@ MVP.Data(fileHMP = "African_SNPs.hmp.txt", filePhe = "Phenotype_African.txt", se
    - Données de phénotype.  
    - Carte génétique.
 
+Voici la version sans sous-sections pour le README :
+
 ---
 
-## **8. Chargement des Données Transformées**
+## 8. Chargement des Données Transformées
 
-### **Chargement des Données de Test**
+Une fois que vous avez préparé vos données et effectué les conversions nécessaires pour rMVP, l'étape suivante consiste à charger les données transformées pour pouvoir les utiliser dans vos analyses. 
 
-```r
-genotype_test <- attach.big.matrix("mvp.hmp.test.geno.desc")
-phenotype_test <- read.table("mvp.hmp.test.phe", header = TRUE)
-map_test <- read.table("mvp.hmp.test.geno.map", header = TRUE)
-```
+Pour charger les données de test, vous devez lire les fichiers suivants :
 
-### **Chargement des Données Complètes**
+- **Genotype de Test** : Ce fichier contient les données génétiques sous forme de matrice.
+  ```r
+  genotype_test <- attach.big.matrix("mvp.hmp.test.geno.desc")
+  ```
 
-```r
-genotype <- attach.big.matrix("mvp.hmp.geno.desc")
-phenotype <- read.table("mvp.hmp.phe", header = TRUE)
-map <- read.table("mvp.hmp.geno.map", header = TRUE)
-```
+- **Phénotype de Test** : Ce fichier contient les informations phénotypiques associées aux échantillons de test.
+  ```r
+  phenotype_test <- read.table("mvp.hmp.test.phe", header = TRUE)
+  ```
+
+- **Map de Test** : Ce fichier contient la carte des positions des SNPs pour les échantillons de test.
+  ```r
+  map_test <- read.table("mvp.hmp.test.geno.map", header = TRUE)
+  ```
+
+Pour charger les données complètes, procédez de la manière suivante :
+
+- **Genotype Complet** : Ce fichier contient les données génétiques pour l'ensemble de l'échantillon.
+  ```r
+  genotype <- attach.big.matrix("mvp.hmp.geno.desc")
+  ```
+
+- **Phénotype Complet** : Ce fichier contient les informations phénotypiques pour l'ensemble des échantillons.
+  ```r
+  phenotype <- read.table("mvp.hmp.phe", header = TRUE)
+  ```
+
+- **Map Complet** : Ce fichier contient la carte des positions des SNPs pour l'ensemble des échantillons.
+  ```r
+  map <- read.table("mvp.hmp.geno.map", header = TRUE)
+  ```
+
+Les fonctions `attach.big.matrix()` et `read.table()` sont utilisées pour charger les données depuis les fichiers de votre répertoire de travail.
 
 ---
 
@@ -210,7 +234,7 @@ for(i in 2:ncol(phenotype_test)) {
 
 ### **12. Interprétation des Figures et Résultats**
 
-L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** (polymorphismes nucléotidiques simples) et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
+L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
 
 ---
 
