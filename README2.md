@@ -27,8 +27,7 @@
 
 ## **1. Introduction**
 
-Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. Téléchargez les fichiers African_SNPs.hmp.txt et Phenotype_African.txt présent dans la section Data pour réaliser l'analyse. 
-
+Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. 
 ---
 
 ## **2. Logiciel Requis**
@@ -40,6 +39,7 @@ Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)
    - `rMVP`  
    - `bigmemory`  
 
+
 ### **Installation des Packages**
 
 Pour installer les bibliothèques dans RStudio, exécutez la commande suivante :
@@ -50,6 +50,12 @@ if (!requireNamespace("rMVP", quietly = TRUE)) {
     install.packages("rMVP", repos = "http://cran.us.r-project.org")
 }
 ```
+
+## **2.1 Fichiers d'entrée requis**
+
+Les fichiers suivants sont présents dans la section Data de ce Github:
+- **Fichier Génotype** : African_SNPs.hmp.txt
+- **Fichier Phénotype** : Phenotype_African.txt
 
 ---
 
@@ -73,7 +79,7 @@ hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
 ```
 
 - **Explication** :  
-   - **`African_SNPs.hmp.txt`** : Fichier contenant les génotypes des SNPs.  
+   - **`African_SNPs.hmp.txt`** : Fichier contenant les information relatives aux SNPs.  
    - **Colonnes 1 à 11** : Informations des SNPs (chromosome, position, etc.).  
    - **Colonnes suivantes** : Génotype des individus.  
 
@@ -90,7 +96,7 @@ test <- hmp_data[, ..selected_columns]
 write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 ```
 
-- **Objectif** : Créer un sous-ensemble réduit de 100 échantillons pour des tests rapides.
+- **Objectif** : Créer un sous-ensemble réduit de 100 échantillons pour des tests rapides afin de valider que le jeu de données est conforme.
 
 ---
 
@@ -118,7 +124,7 @@ MVP.Data(fileHMP = "African_SNPs.hmp.txt", filePhe = "Phenotype_African.txt", se
 
 ## **7. Chargement des Données Transformées**
 
-### **Données de Test**
+### **Chargement des Données de Test**
 
 ```r
 genotype_test <- attach.big.matrix("mvp.hmp.test.geno.desc")
@@ -126,7 +132,7 @@ phenotype_test <- read.table("mvp.hmp.test.phe", header = TRUE)
 map_test <- read.table("mvp.hmp.test.geno.map", header = TRUE)
 ```
 
-### **Données Complètes**
+### **Chargement des Données Complètes**
 
 ```r
 genotype <- attach.big.matrix("mvp.hmp.geno.desc")
@@ -171,11 +177,11 @@ for(i in 2:ncol(phenotype_test)) {
 - **Paramètres Clés** :  
    - **`nPC.MLM = 5`** : Correction de structure basée sur 5 PC.  
    - **`threshold = 0.05`** : Seuil de significativité pour les SNPs.
-- **Pour obtenir les analyses avec les données complètes** : Remplacez les termes "phenotype_test" et "genotype_test" par "phenotype" et "genotype"
+- **IMPORTANT: Pour obtenir les analyses avec les données complètes** : Remplacez les termes "phenotype_test" et "genotype_test" par "phenotype" et "genotype"
 
 ---
 
-1### **10. Interprétation des Figures et Résultats**
+### **10. Interprétation des Figures et Résultats**
 
 L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** (polymorphismes nucléotidiques simples) et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
 
@@ -187,8 +193,8 @@ L'interprétation des figures et des résultats dans une analyse GWAS est crucia
 Le Scree Plot est un graphique essentiel pour évaluer l'importance des différentes composantes principales (PC) dans une analyse en composantes principales (ACP). L'objectif principal de l'ACP est de réduire la dimensionnalité des données tout en conservant un maximum de variance.
 
 #### **Interprétation :**
-- **Axe X** : Représente les **composantes principales** (PC). Chaque composante principale représente une direction dans l'espace de données qui maximise la variance.
-- **Axe Y** : Représente la **valeur propre** de chaque composante principale, c'est-à-dire la quantité de variance expliquée par cette composante.
+- **Axe X** : Représente les composantes principales (PC). Chaque composante principale représente une direction dans l'espace de données qui maximise la variance.
+- **Axe Y** : Représente la valeur propre de chaque composante principale, c'est-à-dire la quantité de variance expliquée par cette composante.
 
 Le **Scree Plot** permet de déterminer combien de composantes principales doivent être retenues dans l'analyse. La **règle du coude** (ou *elbow rule*) est utilisée pour choisir le nombre de composantes principales à conserver.
 
@@ -214,7 +220,7 @@ Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'
 
 #### **Interprétation :**
 - Les **points élevés** sur l'axe Y correspondent aux SNPs ayant des **p-values faibles**, c'est-à-dire des SNPs qui sont fortement associés au trait d'intérêt.
-- La **ligne de seuil** est souvent tracée sur le graphique (par exemple à **-log10(0.05)** ou une valeur similaire), indiquant un seuil au-delà duquel les SNPs sont considérés comme **significativement associés** au trait. Les SNPs au-dessus de cette ligne sont ceux que l'on retient pour des analyses plus poussées.
+- La **ligne de seuil** tracée en rouge sur le graphique indique le seuil au-delà duquel les SNPs sont considérés comme **significativement associés** au trait. Les SNPs au-dessus de cette ligne sont ceux que l'on retient pour des analyses plus poussées. Dans notre jeux de données, aucun SNPs est significativement associé à un phénotype quelconque. 
   
 **Exemple d'interprétation :**
 - Un pic de SNPs au-dessus du seuil peut suggérer une **région génomique d'intérêt**, potentiellement impliquée dans le trait étudié.
@@ -236,8 +242,8 @@ Les **diagrammes circulaires** sont utilisés pour visualiser de manière compac
 - **Position des SNPs sur l'axe Y** : Les **points** sur l'axe vertical du diagramme indiquent la valeur de **-log10(p-value)** de chaque SNP. Comme dans le Manhattan Plot traditionnel, plus un point est élevé, plus l’association du SNP avec le trait est significative.
 
 #### **Interprétation :**
-- Les **SNPs significatifs** apparaissent comme des **points éloignés du centre du cercle**. Plus un SNP est significatif, plus il sera situé près de la périphérie du cercle.
-- Les **points situés près du centre** du diagramme correspondent à des SNPs ayant des **p-values plus élevées**, indiquant qu'ils ne sont pas associés de manière significative au trait d'intérêt.
+- Les **SNPs significatifs** apparaissent comme des **points se rapprochant du centre du cercle**. Plus un SNP est significatif, plus il sera situé au centre du cercle.
+- Les **points éloignés du centre** du diagramme correspondent à des SNPs ayant des **p-values plus élevées**, indiquant qu'ils ne sont pas associés de manière significative au trait d'intérêt.
 - La **répartition des SNPs** autour du cercle permet d'identifier rapidement les régions chromosomiques où se concentrent les SNPs significatifs.
 
 **Exemple d'interprétation :**
@@ -245,25 +251,7 @@ Les **diagrammes circulaires** sont utilisés pour visualiser de manière compac
 
 ---
 
-### **10.4 Fichier des SNPs Significatifs**
-
-#### **Objectif :**
-Le fichier **`pmap.signal`** contient les **détails des SNPs significatifs** après l'analyse GWAS. Ce fichier est crucial pour une exploration plus approfondie des SNPs associés et pour la recherche de gènes candidats.
-
-#### **Structure du fichier :**
-Le fichier contient généralement les informations suivantes :
-- **ID du SNP** : Un identifiant unique pour chaque SNP analysé.
-- **Position** : La position physique du SNP sur le chromosome.
-- **P-value** : La p-value associée au SNP, représentant l'intensité de l'association avec le phénotype.
-  
-#### **Interprétation :**
-- **SNPs significatifs** : Les SNPs dont la **p-value** est inférieure au seuil de significativité défini sont considérés comme **significativement associés** au trait.
-- **Identification de gènes candidats** : Ces SNPs peuvent être situés près de gènes connus ou dans des régions du génome qui méritent une exploration approfondie pour comprendre leurs rôles potentiels dans le trait d'intérêt.
-
-**Exemple d'interprétation :**
-- Un SNP situé près d'un gène spécifique dans le fichier **`pmap.signal`** pourrait être une **cible potentielle** pour une étude fonctionnelle, permettant de vérifier si ce gène joue un rôle dans l'expression du phénotype étudié.
-
-### **10.5 Graphiques QQplot**
+### **10.4 Graphiques QQplot**
 Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\) obtenues à partir des statistiques MLM (Mixed Linear Model) comparée à la distribution théorique attendue sous l'hypothèse nulle.
 
 ### Axes :
