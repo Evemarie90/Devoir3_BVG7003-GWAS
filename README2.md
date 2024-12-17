@@ -11,21 +11,19 @@
 3. [Chargement des Bibliothèques](#3-chargement-des-bibliothèques)  
 4. [Définition du Répertoire de Travail](#4-définition-du-répertoire-de-travail)  
 5. [Chargement et Préparation du Fichier Hapmap](#5-chargement-et-préparation-du-fichier-hapmap)  
+   - [5.1 Filtrage des SNPs avec une Fréquence Allélique Mineure (MAF)](#51-filtrage-des-snps-avec-une-fréquence-allélique-mineure-maf)  
 6. [Sélection d'un Sous-Ensemble de 100 Échantillons](#6-sélection-dun-sous-ensemble-de-100-échantillons)  
 7. [Conversion des Données pour rMVP](#7-conversion-des-données-pour-rmvp)  
-   - 7.1 Données de Test  
-   - 7.2 Données Complètes  
 8. [Chargement des Données Transformées](#8-chargement-des-données-transformées)  
 9. [Analyse en Composantes Principales (ACP)](#9-analyse-en-composantes-principales-acp)  
-10. [Filtrage des SNPs avec une Fréquence Allélique Mineure (MAF)](#10-filtrage-des-snps-avec-une-fréquence-allélique-mineure-maf)  
-11. [Analyse GWAS avec le Modèle MLM](#11-analyse-gwas-avec-le-modèle-mlm)  
-12. [Interprétation des Figures et Résultats](#12-interprétation-des-figures-et-résultats)  
-   - 12.1 Scree Plot (ACP)  
-   - 12.2 Manhattan Plot  
-   - 12.3 Diagrammes Circulaires  
-   - 12.4 QQ Plot  
-   - 12.5 Densité des SNPs  
-13. [Conclusion](#13-conclusion)
+10. [Analyse GWAS avec le Modèle MLM](#10-analyse-gwas-avec-le-modèle-mlm)  
+11. [Interprétation des Figures et Résultats](#11-interprétation-des-figures-et-résultats)  
+   - [11.1 Scree Plot (ACP)](#111-scree-plot-acp)  
+   - [11.2 Manhattan Plot](#112-manhattan-plot)  
+   - [11.3 Diagrammes Circulaires](#113-diagrammes-circulaires)  
+   - [11.4 QQ Plot](#114-qq-plot)  
+   - [11.5 Densité des SNPs](#115-densité-des-snps)  
+12. [Conclusion](#12-conclusion)
 
 ---
 
@@ -100,7 +98,21 @@ hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)
    - **Colonnes 1 à 11** : Informations des SNPs (chromosome, position, etc.).  
    - **Colonnes suivantes** : Génotype des individus.  
 
+## **5.1. Filtrage des SNPs avec une Fréquence Allélique Mineure (MAF)**
+
+Avant d'effectuer l'analyse GWAS, il est important de filtrer les SNPs selon leur fréquence allélique mineure (MAF). Cela permet de supprimer les SNPs rares, qui peuvent être difficiles à interpréter et peuvent introduire du bruit dans les analyses.
+
+Filtrage des SNPs avec MAF < 0.05
+Ce filtrage peut être effectué avec le logiciel Tassel 5.0 en appliquant un seuil de 0,05 pour la fréquence allélique mineure. Cela signifie que tous les SNPs dont la MAF est inférieure ou égale à 0,05 seront exclus de l'analyse. Il peut également être effectué avec un code R du genre: 
+```r
+maf_threshold <- 0.05
+filtered_data <- hmp_data[rowMeans(hmp_data[, 12:ncol(hmp_data)] > maf_threshold) >= maf_threshold, ]
+```
+
+Note importante : Les données partagées dans ce dépôt GitHub sont déjà filtrées pour inclure uniquement les SNPs avec une MAF supérieure à 0,05.
+
 ---
+
 
 ## **6. Sélection d'un Sous-Ensemble de 100 Échantillons**
 
@@ -196,22 +208,7 @@ plot(eigenvalues, type = "b", pch = 19, xlab = "Composante principale", ylab = "
 
 ---
 
-## **10. Filtrage des SNPs avec une Fréquence Allélique Mineure (MAF)**
-
-Avant d'effectuer l'analyse GWAS, il est important de filtrer les SNPs selon leur fréquence allélique mineure (MAF). Cela permet de supprimer les SNPs rares, qui peuvent être difficiles à interpréter et peuvent introduire du bruit dans les analyses.
-
-Filtrage des SNPs avec MAF < 0.05
-Ce filtrage peut être effectué avec le logiciel Tassel 5.0 en appliquant un seuil de 0,05 pour la fréquence allélique mineure. Cela signifie que tous les SNPs dont la MAF est inférieure ou égale à 0,05 seront exclus de l'analyse. Il peut également être effectué avec un code R du genre: 
-```r
-maf_threshold <- 0.05
-filtered_data <- hmp_data[rowMeans(hmp_data[, 12:ncol(hmp_data)] > maf_threshold) >= maf_threshold, ]
-```
-
-Note importante : Les données partagées dans ce dépôt GitHub sont déjà filtrées pour inclure uniquement les SNPs avec une MAF supérieure à 0,05.
-
----
-
-## 11. Analyse GWAS avec le Modèle MLM
+## 10. Analyse GWAS avec le Modèle MLM
 
 L'objectif de cette étape est de réaliser une analyse GWAS pour chaque phénotype en utilisant le modèle MLM (Modèle Linéaire Mixte), qui permet de prendre en compte la structure de population et d'effectuer des corrections via des composantes principales (PC). Ce modèle est particulièrement utile pour identifier les associations entre les SNPs et les traits phénotypiques dans un jeu de données.
 
@@ -274,13 +271,13 @@ L'objectif de cette étape est de réaliser une analyse GWAS pour chaque phénot
 ---
 
 
-### **12. Interprétation des Figures et Résultats**
+### **11. Interprétation des Figures et Résultats**
 
 L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
 
 ---
 
-### **12.1 Scree Plot (Analyse en Composantes Principales - ACP)**
+### **11.1 Scree Plot (Analyse en Composantes Principales - ACP)**
 
 #### **Objectif :**
 Le Scree Plot est un graphique essentiel pour évaluer l'importance des différentes composantes principales (PC) dans une analyse en composantes principales (ACP). L'objectif principal de l'ACP est de réduire la dimensionnalité des données tout en conservant un maximum de variance.
@@ -298,7 +295,7 @@ Dans notre exemple :
 
 ---
 
-## **12.2 Manhattan Plot**
+## **11.2 Manhattan Plot**
 
 #### **Objectif :**
 Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'une analyse GWAS. Elle permet d'identifier les **SNPs associés** au trait d'intérêt en affichant les p-values des tests statistiques.
@@ -321,7 +318,7 @@ Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'
 
 ---
 
-### **12.3 Diagrammes Circulaires**
+### **11.3 Diagrammes Circulaires**
 
 #### **Objectif :**
 Les **diagrammes circulaires** sont utilisés pour visualiser de manière compacte et esthétique la **répartition des SNPs** significatifs sur le génome, tout en maintenant une structure chromosomique ordonnée. C’est une variante du **Manhattan Plot** classique, mais avec un agencement circulaire.
@@ -344,7 +341,7 @@ Les **diagrammes circulaires** sont utilisés pour visualiser de manière compac
 
 ---
 
-### **12.4 Graphiques QQplot**
+### **11.4 Graphiques QQplot**
 Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\) obtenues à partir des statistiques MLM (Mixed Linear Model) comparée à la distribution théorique attendue sous l'hypothèse nulle.
 
 ### Axes :
@@ -371,7 +368,7 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 
 ---
 
-### **12.5 Figure de densité des SNPs**
+### **11.5 Figure de densité des SNPs**
 
 ## Objectif  
 Cette figure présente la **densité des SNPs** sur les chromosomes, analysée dans des fenêtres de **1 Mb**.
@@ -397,6 +394,6 @@ Les régions de **forte densité** de SNPs constituent des candidats potentiels 
 ---
 
 
-## **13. Conclusion**
+## **12. Conclusion**
 
 Ce script offre un workflow complet pour l'analyse GWAS sous RStudio, permettant d'identifier des SNPs significatifs associés aux traits d'intérêt et de générer des visualisations utiles pour l'interprétation des résultats.
