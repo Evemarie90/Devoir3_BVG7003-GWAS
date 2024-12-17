@@ -201,12 +201,13 @@ plot(eigenvalues, type = "b", pch = 19, xlab = "Composante principale", ylab = "
 Avant d'effectuer l'analyse GWAS, il est important de filtrer les SNPs selon leur fréquence allélique mineure (MAF). Cela permet de supprimer les SNPs rares, qui peuvent être difficiles à interpréter et peuvent introduire du bruit dans les analyses.
 
 Filtrage des SNPs avec MAF < 0.05
-Ce filtrage peut être effectué avec le logiciel Tassel 5.0 en appliquant un seuil de 0,05 pour la fréquence allélique mineure. Cela signifie que tous les SNPs dont la MAF est inférieure ou égale à 0,05 seront exclus de l'analyse.
+Ce filtrage peut être effectué avec le logiciel Tassel 5.0 en appliquant un seuil de 0,05 pour la fréquence allélique mineure. Cela signifie que tous les SNPs dont la MAF est inférieure ou égale à 0,05 seront exclus de l'analyse. Il peut également être effectué avec un code R du genre: 
+```r
+maf_threshold <- 0.05
+filtered_data <- hmp_data[rowMeans(hmp_data[, 12:ncol(hmp_data)] > maf_threshold) >= maf_threshold, ]
+```
 
 Note importante : Les données partagées dans ce dépôt GitHub sont déjà filtrées pour inclure uniquement les SNPs avec une MAF supérieure à 0,05.
-
-
-Voici une version détaillée de l'étape "Analyse GWAS avec le Modèle MLM" en format README :
 
 ---
 
