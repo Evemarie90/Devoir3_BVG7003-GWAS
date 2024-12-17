@@ -273,7 +273,6 @@ L'objectif de cette étape est de réaliser une analyse GWAS pour chaque phénot
 
 ---
 
-Cela fournit une explication détaillée étape par étape de l'analyse GWAS en utilisant le modèle MLM, en précisant les paramètres clés et leur fonction dans le cadre de l'analyse.
 
 ### **12. Interprétation des Figures et Résultats**
 
