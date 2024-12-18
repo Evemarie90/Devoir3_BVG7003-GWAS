@@ -381,24 +381,22 @@ La correction peut se faire avec des méthodes comme Bonferroni, qui divise le s
 
 ### **11.5 Figure de densité des SNPs**
 
-## Objectif  
+#### Objectif  
 Cette figure présente la **densité des SNPs** sur les chromosomes, analysée dans des fenêtres de **1 Mb**.
 
 
-## Description des Axes  
+#### Description des Axes  
 - **Axe vertical** : Chromosomes (Chr1 à Chr20).  
 - **Axe horizontal** : Positions génomiques le long des chromosomes (en mégabases, Mb).  
 
 
-## Échelle des Couleurs  
+#### Échelle des Couleurs  
 La densité des SNPs est représentée par une échelle de couleurs :  
 - **Vert foncé à clair** : Faible densité de SNPs (1 à 100 SNPs).  
 - **Jaune à orange** : Densité modérée (100 à 232 SNPs).  
 - **Rouge** : Haute densité de SNPs (265 à >298 SNPs).   
 
----
-
-## Conclusion   
+#### Conclusion   
 
 Les régions de **forte densité** de SNPs constituent des candidats potentiels pour des études approfondies sur la variabilité génétique et la biologie sous-jacente.  
 
