@@ -310,9 +310,6 @@ Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'
 - Les **points élevés** sur l'axe Y correspondent aux SNPs ayant des **p-values faibles**, c'est-à-dire des SNPs qui sont fortement associés au trait d'intérêt.
 - La **ligne de seuil** tracée en rouge sur le graphique indique le seuil au-delà duquel les SNPs sont considérés comme **significativement associés** au trait. Les SNPs au-dessus de cette ligne sont ceux que l'on retient pour des analyses plus poussées. Dans notre jeux de données, aucun SNPs est significativement associé à un phénotype quelconque. 
   
-**Exemple d'interprétation :**
-- Un pic de SNPs au-dessus du seuil peut suggérer une **région génomique d'intérêt**, potentiellement impliquée dans le trait étudié.
-- L'intensité et la localisation des pics peuvent également fournir des indices sur des **gènes candidats** ou des **régions génétiques** importantes.
 
 ---
 
@@ -328,6 +325,11 @@ Les **diagrammes circulaires** sont utilisés pour visualiser de manière compac
   - **Positions des SNPs** : Sur chaque chromosome, les SNPs sont représentés le long de l'arc du cercle, suivant leur position sur le chromosome. Les SNPs sont espacés de manière uniforme le long de chaque secteur.
   
 - **Position des SNPs sur l'axe Y** : Les **points** sur l'axe vertical du diagramme indiquent la valeur de **-log10(p-value)** de chaque SNP. Comme dans le Manhattan Plot traditionnel, plus un point est élevé (près du centre), plus l’association du SNP avec le trait est significative.
+
+- **Densité des SNPs** : Pour chaque chromosome, nous pouvons également voir la densité des SNPs au pourtour du cercle. La densité des SNPs est représentée par une échelle de couleurs :
+Vert foncé à clair : Faible densité de SNPs (1 à 100 SNPs).
+Jaune à orange : Densité modérée (100 à 232 SNPs).
+Rouge : Haute densité de SNPs (265 à >298 SNPs).
 
 #### **Interprétation :**
 - Les **SNPs significatifs** apparaissent comme des **points se rapprochant du centre du cercle**. Plus un SNP est significatif, plus il sera situé au centre du cercle.
