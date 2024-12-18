@@ -352,11 +352,11 @@ Rouge : Haute densité de SNPs (265 à >298 SNPs).
 ### **11.4 Graphiques QQplot**
 Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\) obtenues à partir des statistiques MLM (Mixed Linear Model) comparée à la distribution théorique attendue sous l'hypothèse nulle.
 
-### Axes :
+#### Axes :
 - **Axe X** : Valeurs attendues de \(-\log_{10}(p)\) sous l'hypothèse nulle.
 - **Axe Y** : Valeurs observées de \(-\log_{10}(p)\).
 
-### Éléments du graphique :
+#### Éléments du graphique :
 - **Ligne rouge** : Distribution théorique sous l'hypothèse nulle.
 - **Points bleus** : Valeurs observées de \(-\log_{10}(p)\).
 - **Bande bleue** : Intervalle de confiance autour de la distribution théorique.
