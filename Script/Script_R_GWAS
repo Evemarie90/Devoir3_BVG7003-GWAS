@@ -13,13 +13,20 @@ library(bigmemory)  # Pour la gestion efficace des matrices de grande taille
 # ===============================
 
 # Définition du répertoire de travail
-setwd("./")  # Définit le répertoire de travail actuel
+setwd("C:/Users/Felix/OneDrive/Bureau/CoursDavoudA24")  # Définit le répertoire de travail. Suprimez «C:/Users/Felix/OneDrive/Bureau/CoursDavoudA24» et copiez votre propre chemin d'accès, correspondant à l'endroit où se trouve les fichiers génotypes et phénotypes préalablement téléchargés.
 
 # Chargement du fichier Hapmap contenant les données de génotype
 hmp_data <- fread("African_SNPs.hmp.txt", header = TRUE)  # Lecture du fichier Hapmap
 
 # ===============================
-# 3. Sélection aléatoire de 100 échantillons pour tester les analyses sur un plus petit jeu de données (données test)
+# 3. Filtrage fichier Hapmap 
+# ===============================
+
+# Filtrage des SNPs (par exemple, élimination des SNPs selon les critères de MAFs au seuil de 0.05)
+# Le filtrage n'est pas présenté ici : les données de génotype de cette analyse ont déjà été filtrées selon ce critère à l'aide du logiciel Tassel 5.0
+
+# ===============================
+# 4. Sélection aléatoire de 100 échantillons pour tester les analyses sur un plus petit jeu de données (données test)
 # ===============================
 
 set.seed(42)  # Rend l'aléatoire reproductible
@@ -33,7 +40,7 @@ write.table(test, file = "test_file.hmp.txt", sep = "\t", row.names = FALSE, quo
 
 
 # ===============================
-# 4.1 Préparation des fichiers de génotype et de phénotype avec les données test
+# 5.1 Préparation des fichiers de génotype et de phénotype avec les données test
 # ===============================
 
 # MVP.Data crée les fichiers de génotype, de phénotype et de carte génétique à partir des fichiers d'origine et du jeu de données test créé précédement
@@ -43,7 +50,7 @@ MVP.Data(fileHMP = "test_file.hmp.txt",  # Fichier Hapmap du génotype
          out = "mvp.hmp.test")  # Préfixe des noms de fichiers de sortie générés
 
 # ===============================
-# 4.2 Préparation des fichiers de génotype et de phénotype avec les données d'origine
+# 5.2 Préparation des fichiers de génotype et de phénotype avec les données d'origine
 # ===============================
 
 # MVP.Data crée les fichiers de génotype, de phénotype et de carte génétique à partir des fichiers d'origine et du jeu de données test créé précédement
@@ -53,7 +60,7 @@ MVP.Data(fileHMP = "African_SNPs.hmp.txt",  # Fichier Hapmap du génotype
          out = "mvp.hmp")  # Préfixe des noms de fichiers de sortie générés
 
 # ===============================
-# 5.1 Chargement des fichiers de génotype, phénotype et carte génétique avec données test
+# 6.1 Chargement des fichiers de génotype, phénotype et carte génétique avec données test
 # ===============================
 
 # Lecture des fichiers de sortie générés par MVP.Data
@@ -68,7 +75,7 @@ phenotype_test <- read.table("mvp.hmp.test.phe", header = TRUE)  # Lecture du fi
 map_test <- read.table("mvp.hmp.test.geno.map", header = TRUE)  # Lecture de la carte génétique
 
 # ===============================
-# 5.2 Chargement des fichiers de génotype, phénotype et carte génétique avec données d'origine
+# 6.2 Chargement des fichiers de génotype, phénotype et carte génétique avec données d'origine
 # ===============================
 
 # Lecture des fichiers de sortie générés par MVP.Data
@@ -83,7 +90,7 @@ phenotype <- read.table("mvp.hmp.phe", header = TRUE)  # Lecture du fichier de p
 map <- read.table("mvp.hmp.geno.map", header = TRUE)  # Lecture de la carte génétique
 
 # ===============================
-# 6. Analyse en composantes principales (ACP) avec les données d'origine
+# 7. Analyse en composantes principales (ACP) avec les données d'origine
 # ===============================
 
 # Conversion de la matrice de génotype pour réaliser l'ACP
@@ -101,14 +108,6 @@ plot(eigenvalues, type = "b", pch = 19,
      ylab = "Valeur propre (eigenvalue)", 
      main = "Scree Plot", xlim = c(1, 30))  # Affichage des 30 premières composantes
 #Le scree plot précédent nous permet de déterminer le nombre d'axes significatives qui représentent le plus simplement nos données de génotype d'origine. À l'aide de ce graphique, nous avons déterminé que 5 axes forment le "coude" et expliquent le mieux nos données. Après les 5 premiers points, la part explicative de l'ajout des axes subséquentes devient moins importante.
-
-# ===============================
-# 7. Filtrage fichier Hapmap 
-# ===============================
-
-# Filtrage des SNPs (par exemple, élimination des SNPs selon les critères de MAFs au seuil de 0.05)
-# Le filtrage n'est pas présenté ici : les données de génotype de cette analyse ont déjà été filtrées selon ce critère à l'aide du logiciel Tassel 5.0
-
 
 # ===============================
 # 8. Analyse GWAS avec les données test / d'origine 
