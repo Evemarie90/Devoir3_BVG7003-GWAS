@@ -29,7 +29,7 @@
 
 ## **1. Introduction**
 
-Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. 
+Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. L'exécution comprend la manipulation des données afin de produire des données test. Ces données peuvent aussi être retrouvées dans le dossier Data/ du présent Git. Pour réaliser l'analyse avec les données d'origine / données test, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS et dans ce présent guide. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse (données test vs données d'origine). 
 ---
 
 ## **2. Logiciel Requis**
