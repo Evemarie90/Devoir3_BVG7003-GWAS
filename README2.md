@@ -76,14 +76,12 @@ library(bigmemory)
 ## **4. Définition du Répertoire de Travail**
 
 ```r
-setwd("./")  # Définit le répertoire de travail sur le dossier actuel (par exemple, après avoir cloné le dépôt Git)
+setwd("C:/Users/Felix/OneDrive/Bureau/CoursDavoudA24")  # Définit le répertoire de travail sur le dossier actuel (par exemple, après avoir cloné le dépôt Git)
 ```
 
 - **Explication** :  
    Cette ligne de code définit le répertoire de travail pour le script R. 
-   - **`setwd("./")`** : Cette commande définit le répertoire de travail comme étant le **dossier actuel**, c'est-à-dire le dossier où se trouve le script R.    
-   - Cette ligne garantit que le script fonctionne correctement sans avoir à spécifier de chemins absolus pour les fichiers.
-   - Si vous n'arrivez pas à définir le répertoire de travail, copiez le chemin d'accès de votre ordinateur où vous avez enregistrés les fichiers de l'étape 2.1 dans les "". Par exemple: setwd("C:/Users/Felix/OneDrive/Bureau/CoursDavoudA24"). Prenez bien soin d'ajuster l'orientation des /. 
+   - Copiez le chemin d'accès de votre ordinateur où vous avez enregistrés les fichiers de l'étape 2.1 dans les "". Prenez bien soin d'ajuster l'orientation des /. 
 
 ---
 
