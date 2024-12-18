@@ -316,7 +316,7 @@ Le **Manhattan Plot** est une figure utilisée pour visualiser les résultats d'
 
 #### **Interprétation :**
 - Les **points élevés** sur l'axe Y correspondent aux SNPs ayant des **p-values faibles**, c'est-à-dire des SNPs qui sont fortement associés au trait d'intérêt.
-- La **ligne de seuil** tracée en rouge sur le graphique indique le seuil au-delà duquel les SNPs sont considérés comme **significativement associés** au trait. Les SNPs au-dessus de cette ligne sont ceux que l'on retient pour des analyses plus poussées. Dans notre jeux de données, aucun SNPs est significativement associé à un phénotype quelconque. 
+- La **ligne de seuil** tracée en rouge sur le graphique indique le seuil au-delà duquel les SNPs sont considérés comme **significativement associés** au trait. Les SNPs au-dessus de cette ligne sont ceux que l'on retient pour des analyses plus poussées. **Dans notre jeux de données, aucun SNPs est significativement associé à un phénotype quelconque**. 
   
 
 ---
