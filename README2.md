@@ -29,7 +29,7 @@
 
 ## **1. Introduction**
 
-Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. L'exécution comprend la manipulation des données afin de produire des données test. Ces données peuvent aussi être retrouvées dans le dossier Data/ du présent Git. Pour réaliser l'analyse avec les données d'origine / données test, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS et dans ce présent guide. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse (données test vs données d'origine). 
+Ce script permet de réaliser une **analyse GWAS (Genome-Wide Association Study)** sur des données de génotype et de phénotype. Il est implémenté dans **R** et utilise la bibliothèque **`rMVP`** pour effectuer les calculs statistiques et produire des visualisations comme le **Scree Plot** et les **Manhattan Plots**. L'exécution comprend la manipulation des données afin de produire des données test. Ces données peuvent aussi être retrouvées dans le dossier Data/ du présent Git. Pour réaliser l'analyse avec les données d'origine / données test, il faudra effectuer quelques changements tels que décrits dans le Script_R_GWAS et dans ce présent guide. Ces changements permettent d'interchanger l'attributions des variables pour la fonction MVP afin de définir les données à utiliser pour l'analyse (données test vs données d'origine). Assurez-vous de consulter en détails la documentation présentée ici ainsi que les annotations du script.
 ---
 
 ## **2. Logiciel Requis**
@@ -267,8 +267,16 @@ L'objectif de cette étape est de réaliser une analyse GWAS pour chaque phénot
      ```
 
 ---
+## Résultats attendus
 
+Plusieurs graphiques sont générés lors de l'analyse avec le paquet rMVP. 
+Parmis ceux-ci, on peut retrouver; 
 
+Des graphiques de Manhattan montrant les SNPs significatifs, un graphique QQ montrant l'absence ou la présence d'inflation génomique et une figure montrant la densité des SNPs sur les différents chromosomes. 
+
+Un exemple de résultats est présenté dans le répertoire Résultats/ du Github.
+
+---
 ### **11. Interprétation des Figures et Résultats**
 
 L'interprétation des figures et des résultats dans une analyse GWAS est cruciale pour comprendre les associations entre les **SNPs** et le **phénotype** d'intérêt. Voici un examen détaillé des différentes figures utilisées dans ce type d'analyse :
@@ -354,7 +362,7 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
 - **Bande bleue** : Intervalle de confiance autour de la distribution théorique.
 
 
-## Interprétation du graphique
+## Interprétation du graphique (Diagramme QQ présent dans la section Résultats)
 1. **Position des points bleus** :
    - Les **points bleus** sont situés **en dessous** de la ligne rouge.
 
@@ -362,7 +370,10 @@ Le QQplot représente la distribution observée des valeurs de \(-\log_{10}(p)\)
    - Les valeurs observées de \(-\log_{10}(p)\) sont **inférieures** aux valeurs attendues.
    - Cela signifie que les p-values observées sont plus **grandes** que prévu sous l'hypothèse nulle.
 
-3. **Conclusion** :
+3. **La correction des p-values**
+La correction peut se faire avec des méthodes comme Bonferroni, qui divise le seuil de significativité par le nombre total de tests pour réduire les faux positifs, ou le contrôle du taux de fausses découvertes (FDR), qui limite la proportion de faux positifs parmi les résultats significatifs. En GWAS, des ajustements spécifiques comme le contrôle de l'inflation génétique (λ) tiennent compte de la structure génétique pour minimiser les biais.
+
+4. **Conclusion** :
    - Il n'y a **pas de signal fort** dans les données analysées. Les résultats suggèrent que les associations testées ne sont pas significatives.
    - Le modèle MLM semble **conservateur**, ce qui peut réduire le risque de faux positifs mais augmenter celui de **faux négatifs** (signal réel manqué).
 
